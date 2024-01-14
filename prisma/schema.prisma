@@ -1,0 +1,195 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---　イベント関連 ----- 
+model Event {
+  id            String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date          DateTime        @default(now())
+  name          String          @unique
+  prefecture_id Int
+  prefecture    Prefecture      @relation(fields: [prefecture_id], references: [id])
+  follower      EventFollower[]
+  post          Post[]
+}
+
+model Prefecture {
+  id            Int     @id
+  name          String
+  name_alphabet String
+  block         String
+  event         Event[]
+}
+
+model EventFollower {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id  String @db.Uuid
+  event_id String @db.Uuid
+  event    Event  @relation(fields: [event_id], references: [id])
+  user     User   @relation(fields: [user_id], references: [id])
+}
+
+// ---　ユーザー関連 ----- 
+model User {
+  id                  String               @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name                String               @unique
+  email               String               @unique
+  hashedPassword      String               @unique
+  icon                String?
+  introduction        String?
+  instagram           String?
+  x                   String?
+  lock                Boolean              @default(false)
+  following           Follow[]             @relation("UserFollows")
+  follower            Follow[]             @relation("UserFollowers")
+  blocking            Block[]              @relation("UserBlocks")
+  blocker             Block[]              @relation("UserBlockers")
+  followEvents        EventFollower[]
+  post                Post[]
+  like                Like[]
+  bad                 Bad[]
+  retweet             Retweet[]
+  comment             Comment[]
+  commentlike         CommentLike[]
+  commentbad          CommentBad[]
+  commentretweet      CommentRetweet[]
+  notificationSetting NotificationSetting?
+}
+
+model Follow {
+  id           String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id      String @db.Uuid
+  following_id String @db.Uuid
+  status       String @default("approved")
+  user         User   @relation("UserFollows", fields: [user_id], references: [id])
+  following    User   @relation("UserFollowers", fields: [following_id], references: [id])
+}
+
+model Block {
+  id          String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id     String @db.Uuid
+  blocking_id String @db.Uuid
+  user        User   @relation("UserBlocks", fields: [user_id], references: [id])
+  blocked     User   @relation("UserBlockers", fields: [blocking_id], references: [id])
+}
+
+// ---　つぶやき関連 ----- 
+model Post {
+  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date           DateTime         @default(now())
+  text           String
+  image          String?
+  category       String?
+  user_id        String           @db.Uuid
+  event_id       String           @db.Uuid
+  like           Like[]
+  bad            Bad[]
+  retweet        Retweet[]
+  commentlike    CommentLike[]
+  commentbad     CommentBad[]
+  commentretweet CommentRetweet[]
+  comment        Comment[]
+  user           User             @relation(fields: [user_id], references: [id])
+  event          Event            @relation(fields: [event_id], references: [id])
+}
+
+model Like {
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date    DateTime @default(now())
+  post_id String   @db.Uuid
+  user_id String   @db.Uuid
+  post    Post     @relation(fields: [post_id], references: [id])
+  user    User     @relation(fields: [user_id], references: [id])
+}
+
+model Bad {
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date    DateTime @default(now())
+  post_id String   @db.Uuid
+  user_id String   @db.Uuid
+  post    Post     @relation(fields: [post_id], references: [id])
+  user    User     @relation(fields: [user_id], references: [id])
+}
+
+model Retweet {
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date    DateTime @default(now())
+  post_id String   @db.Uuid
+  user_id String   @db.Uuid
+  post    Post     @relation(fields: [post_id], references: [id])
+  user    User     @relation(fields: [user_id], references: [id])
+}
+
+// ---　つぶやきのコメント関連 ----- 
+model Comment {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date      DateTime  @default(now())
+  parent_id String?   @db.Uuid
+  text      String
+  post_id   String    @db.Uuid
+  user_id   String    @db.Uuid
+  post      Post      @relation(fields: [post_id], references: [id])
+  user      User      @relation(fields: [user_id], references: [id])
+  children  Comment[] @relation("CommentChildren") //子コメントの配列
+  parent    Comment?  @relation("CommentChildren", fields: [parent_id], references: [id]) //parent_idが自己モデル参照であることを明示
+}
+
+model CommentLike {
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date    DateTime @default(now())
+  post_id String   @db.Uuid
+  user_id String   @db.Uuid
+  post    Post     @relation(fields: [post_id], references: [id])
+  user    User     @relation(fields: [user_id], references: [id])
+}
+
+model CommentBad {
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date    DateTime @default(now())
+  post_id String   @db.Uuid
+  user_id String   @db.Uuid
+  post    Post     @relation(fields: [post_id], references: [id])
+  user    User     @relation(fields: [user_id], references: [id])
+}
+
+model CommentRetweet {
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date    DateTime @default(now())
+  post_id String   @db.Uuid
+  user_id String   @db.Uuid
+  post    Post     @relation(fields: [post_id], references: [id])
+  user    User     @relation(fields: [user_id], references: [id])
+}
+
+// ---　通知設定 ----- 
+model NotificationSetting {
+  id                    String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  newPostEvent          Boolean @default(true)
+  newPostFollowing      Boolean @default(true)
+  newFollower           Boolean @default(true)
+  followRequest         Boolean @default(true)
+  followRequestApproved Boolean @default(false)
+  likeOwnPost           Boolean @default(true)
+  badOwnPost            Boolean @default(false)
+  retweetOwnPost        Boolean @default(true)
+  commentOwnPost        Boolean @default(true)
+  user_id               String  @unique @db.Uuid
+  user                  User    @relation(fields: [user_id], references: [id])
+}
+
+// ---　問い合わせ ----- 
+model Contact {
+  id    String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date  DateTime @default(now())
+  name  String
+  email String
+  text  String
+}
