@@ -12,37 +12,51 @@ datasource db {
 
 // ---　イベント関連 ----- 
 model Event {
-  id            String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date          DateTime        @default(now())
-  name          String          @unique
-  prefecture_id Int
-  prefecture    Prefecture      @relation(fields: [prefecture_id], references: [id])
-  follower      EventFollower[]
-  post          Post[]
+  id           String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  eventDate    DateTime        @map("event_date")
+  name         String          @unique
+  prefectureId Int             @map("prefecture_id")
+  prefecture   Prefecture      @relation(fields: [prefectureId], references: [id])
+  follower     EventFollower[]
+  post         Post[]
+
+  @@map("event")
 }
 
 model Prefecture {
-  id            Int     @id
-  name          String
-  name_alphabet String
-  block         String
-  event         Event[]
+  id           Int      @id
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  name         String
+  nameAlphabet String   @map("name_alphabet")
+  block        String
+  event        Event[]
+
+  @@map("prefecture")
 }
 
 model EventFollower {
-  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id  String @db.Uuid
-  event_id String @db.Uuid
-  event    Event  @relation(fields: [event_id], references: [id])
-  user     User   @relation(fields: [user_id], references: [id])
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  userId    String   @map("user_id") @db.Uuid
+  eventId   String   @map("event_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
+
+  @@map("event_follower")
 }
 
 // ---　ユーザー関連 ----- 
 model User {
   id                  String               @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
   name                String               @unique
   email               String               @unique
-  hashedPassword      String               @unique
+  hashedPassword      String               @unique @map("hashed_password")
   icon                String?
   introduction        String?
   instagram           String?
@@ -60,36 +74,47 @@ model User {
   comment             Comment[]
   commentlike         CommentLike[]
   commentbad          CommentBad[]
-  commentretweet      CommentRetweet[]
+  commentRetweet      CommentRetweet[]
   notificationSetting NotificationSetting?
+
+  @@map("user")
 }
 
 model Follow {
-  id           String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id      String @db.Uuid
-  following_id String @db.Uuid
-  status       String @default("approved")
-  user         User   @relation("UserFollows", fields: [user_id], references: [id])
-  following    User   @relation("UserFollowers", fields: [following_id], references: [id])
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  userId      String   @map("user_id") @db.Uuid
+  followingId String   @map("following_id") @db.Uuid
+  status      String   @default("approved")
+  user        User     @relation("UserFollows", fields: [userId], references: [id])
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id])
+
+  @@map("follow")
 }
 
 model Block {
-  id          String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id     String @db.Uuid
-  blocking_id String @db.Uuid
-  user        User   @relation("UserBlocks", fields: [user_id], references: [id])
-  blocked     User   @relation("UserBlockers", fields: [blocking_id], references: [id])
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  userId     String   @map("user_id") @db.Uuid
+  blockingId String   @map("blocking_id") @db.Uuid
+  user       User     @relation("UserBlocks", fields: [userId], references: [id])
+  blocked    User     @relation("UserBlockers", fields: [blockingId], references: [id])
+
+  @@map("block")
 }
 
 // ---　つぶやき関連 ----- 
 model Post {
   id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date           DateTime         @default(now())
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
   text           String
   image          String?
   category       String?
-  user_id        String           @db.Uuid
-  event_id       String           @db.Uuid
+  userId         String           @map("user_id") @db.Uuid
+  eventId        String           @map("event_id") @db.Uuid
   like           Like[]
   bad            Bad[]
   retweet        Retweet[]
@@ -97,99 +122,128 @@ model Post {
   commentbad     CommentBad[]
   commentretweet CommentRetweet[]
   comment        Comment[]
-  user           User             @relation(fields: [user_id], references: [id])
-  event          Event            @relation(fields: [event_id], references: [id])
+  user           User             @relation(fields: [userId], references: [id])
+  event          Event            @relation(fields: [eventId], references: [id])
+
+  @@map("post")
 }
 
 model Like {
-  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date    DateTime @default(now())
-  post_id String   @db.Uuid
-  user_id String   @db.Uuid
-  post    Post     @relation(fields: [post_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  postId    String   @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("like")
 }
 
 model Bad {
-  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date    DateTime @default(now())
-  post_id String   @db.Uuid
-  user_id String   @db.Uuid
-  post    Post     @relation(fields: [post_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  postId    String   @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("bad")
 }
 
 model Retweet {
-  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date    DateTime @default(now())
-  post_id String   @db.Uuid
-  user_id String   @db.Uuid
-  post    Post     @relation(fields: [post_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  postId    String   @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("retweet")
 }
 
 // ---　つぶやきのコメント関連 ----- 
 model Comment {
   id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date      DateTime  @default(now())
-  parent_id String?   @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  parentId  String?   @map("parent_id") @db.Uuid
   text      String
-  post_id   String    @db.Uuid
-  user_id   String    @db.Uuid
-  post      Post      @relation(fields: [post_id], references: [id])
-  user      User      @relation(fields: [user_id], references: [id])
+  postId    String    @map("post_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  post      Post      @relation(fields: [postId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
   children  Comment[] @relation("CommentChildren") //子コメントの配列
-  parent    Comment?  @relation("CommentChildren", fields: [parent_id], references: [id]) //parent_idが自己モデル参照であることを明示
+  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id]) //parent_idが自己モデル参照であることを明示
+
+  @@map("comment")
 }
 
 model CommentLike {
-  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date    DateTime @default(now())
-  post_id String   @db.Uuid
-  user_id String   @db.Uuid
-  post    Post     @relation(fields: [post_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  postId    String   @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("comment_like")
 }
 
 model CommentBad {
-  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date    DateTime @default(now())
-  post_id String   @db.Uuid
-  user_id String   @db.Uuid
-  post    Post     @relation(fields: [post_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  id     String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date   DateTime @default(now())
+  postId String   @map("post_id") @db.Uuid
+  userId String   @map("user_id") @db.Uuid
+  post   Post     @relation(fields: [postId], references: [id])
+  user   User     @relation(fields: [userId], references: [id])
+
+  @@map("comment_bad")
 }
 
 model CommentRetweet {
-  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date    DateTime @default(now())
-  post_id String   @db.Uuid
-  user_id String   @db.Uuid
-  post    Post     @relation(fields: [post_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  postId    String   @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("comment_retweet")
 }
 
 // ---　通知設定 ----- 
 model NotificationSetting {
-  id                    String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  newPostEvent          Boolean @default(true)
-  newPostFollowing      Boolean @default(true)
-  newFollower           Boolean @default(true)
-  followRequest         Boolean @default(true)
-  followRequestApproved Boolean @default(false)
-  likeOwnPost           Boolean @default(true)
-  badOwnPost            Boolean @default(false)
-  retweetOwnPost        Boolean @default(true)
-  commentOwnPost        Boolean @default(true)
-  user_id               String  @unique @db.Uuid
-  user                  User    @relation(fields: [user_id], references: [id])
+  id                    String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+  newPostEvent          Boolean  @default(true) @map("new_post_event")
+  newPostFollowing      Boolean  @default(true) @map("new_post_following")
+  newFollower           Boolean  @default(true) @map("new_follower")
+  followRequest         Boolean  @default(true) @map("follow_request")
+  followRequestApproved Boolean  @default(true) @map("follow_request_approved")
+  likeOwnPost           Boolean  @default(true) @map("like_own_post")
+  badOwnPost            Boolean  @default(false) @map("bad_own_post")
+  retweetOwnPost        Boolean  @default(true) @map("retweet_own_post")
+  commentOwnPost        Boolean  @default(true) @map("comment_own_post")
+  userId                String   @unique @map("user_id") @db.Uuid
+  user                  User     @relation(fields: [userId], references: [id])
+
+  @@map("notification_setting")
 }
 
 // ---　問い合わせ ----- 
 model Contact {
-  id    String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date  DateTime @default(now())
-  name  String
-  email String
-  text  String
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  name      String
+  email     String
+  text      String
+
+  @@map("contact")
 }
