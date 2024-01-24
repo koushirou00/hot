@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# 一時的なコミット除外
+/src/app/usage
+/src/app/main/search
+/src/app/api/events
+
+
 # dependencies
 /node_modules
 /.pnp
@@ -37,4 +43,3 @@ next-env.d.ts
 
 # prisma
 /prisma/migrations
-*.prisma
