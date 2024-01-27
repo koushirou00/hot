@@ -54,9 +54,7 @@ model User {
   id                  String               @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   createdAt           DateTime             @default(now()) @map("created_at")
   updatedAt           DateTime             @updatedAt @map("updated_at")
-  name                String               @unique
-  email               String               @unique
-  hashedPassword      String               @unique @map("hashed_password")
+  name                String               @default("NO NAME")
   icon                String?
   introduction        String?
   instagram           String?
@@ -81,14 +79,14 @@ model User {
 }
 
 model Follow {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  userId      String   @map("user_id") @db.Uuid
-  followingId String   @map("following_id") @db.Uuid
-  status      String   @default("approved")
-  user        User     @relation("UserFollows", fields: [userId], references: [id])
-  following   User     @relation("UserFollowers", fields: [followingId], references: [id])
+  id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  userId        String   @map("user_id") @db.Uuid
+  followingId   String   @map("following_id") @db.Uuid
+  status        String   @default("approved")
+  user          User     @relation("UserFollows", fields: [userId], references: [id])
+  followingUser User     @relation("UserFollowers", fields: [followingId], references: [id])
 
   @@map("follow")
 }
