@@ -234,7 +234,7 @@ model NotificationSetting {
   @@map("notification_setting")
 }
 
-// ---　問い合わせ ----- 
+// ---　問い合わせ ----- S
 model Contact {
   id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")

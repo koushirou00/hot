@@ -3,6 +3,7 @@
 # 一時的なコミット除外
 /src/app/usage
 /src/app/main/search
+/src/app/api/events
 
 
 # dependencies
