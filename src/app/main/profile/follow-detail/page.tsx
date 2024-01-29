@@ -1,6 +1,6 @@
 // src/app/main/profile/follow-detail/page.tsx
 import React from 'react';
-import { getUserProfile } from '@/utils/getUserProfile';
+import { getUserProfile } from '@/functions/getUserProfile';
 import { Header } from '@/app/main/profile/follow-detail/components/Header';
 import { Contents } from '@/app/main/profile/follow-detail/components/Contents';
 

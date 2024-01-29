@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 async function patchUserData(userId: string) {
   const host = headers().get('host');
-  const response = await fetch(`http://${host}/api/user/${userId}`, {
+  const response = await fetch(`http://${host}/api/user`, {
     method: 'PATCH'
   });
   if (!response.ok) throw new Error(`ユーザー情報更新のAPIで失敗しました: ${response}`);

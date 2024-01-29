@@ -1,10 +1,9 @@
 // src/app/auth/complete/components/Contents.tsx
 import React from 'react';
-import { getAuthUser } from '@/utils/supabaseServer';
 import Link from 'next/link';
 
-async function postUserData(userId: string) {
-  const response = await fetch(`${process.env.URL}/api/user/${userId}`, {
+async function postUserData() {
+  const response = await fetch(`${process.env.URL}/api/user/`, {
     method: 'POST'
   });
   if (!response.ok) throw new Error(`ユーザー登録時のAPIで失敗しました: ${response}`);
@@ -12,17 +11,15 @@ async function postUserData(userId: string) {
 }
 
 export const Contents: React.FC = async () => {
-  const data = await getAuthUser();
-  const userId = data?.userData.id;
-  if (!userId) throw new Error(`ユーザーIDが見つかりません: ${userId}`);
-  const result = await postUserData(userId);
+  const result = await postUserData();
 
-  if (result.status === 200) {
+  if (result.status === 403) {
     return (
       <div>
-        登録完了いたしました。下記よりログインしてください。
+        <h1>すでに登録済みです</h1>
+        <p>下記よりHOMEに移動してください</p>
         <Link className='text-blue-300' href='/auth'>
-          ログインページ
+          HOME
         </Link>
       </div>
     );
@@ -30,10 +27,9 @@ export const Contents: React.FC = async () => {
 
   return (
     <div>
-      <h1>すでに登録済みです</h1>
-      <p>下記よりHOMEに移動してください</p>
+      登録完了いたしました。下記よりログインしてください。
       <Link className='text-blue-300' href='/auth'>
-        HOME
+        ログイン
       </Link>
     </div>
   );

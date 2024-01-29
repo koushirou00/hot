@@ -1,6 +1,6 @@
 import React from 'react';
 import { FollowStatus } from '@/app/main/profile/components/FollowStatus';
-import { getUserProfile } from '@/utils/getUserProfile';
+import { getUserProfile } from '@/functions/getUserProfile';
 import Image from 'next/image';
 
 export const Contents: React.FC = async () => {
