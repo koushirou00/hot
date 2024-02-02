@@ -13,7 +13,6 @@ export async function middleware(req: NextRequest) {
 
   const token = session?.access_token;
   const path = req.nextUrl.pathname;
-  console.log(token);
 
   if (error) console.log('ミドルウェアでのエラー: ', error);
 

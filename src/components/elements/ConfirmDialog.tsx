@@ -29,14 +29,14 @@ export const ConfirmDialog: React.FC<Props> = ({ show, onClose, action }) => {
   }
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
-      <div className='bg-white p-4 rounded-lg shadow-lg w-72 flex flex-col justify-center items-center'>
+    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
+      <div className='flex w-72 flex-col items-center justify-center rounded-lg bg-white p-4 shadow-lg'>
         <p className='mb-4 text-justify'>{text}</p>
-        <div className='flex justify-around w-full'>
-          <Button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => onClose(true)}>
+        <div className='flex w-full justify-around'>
+          <Button variant='primary' onClick={() => onClose(true)}>
             はい
           </Button>
-          <Button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => onClose(false)}>
+          <Button variant='cancel' onClick={() => onClose(false)}>
             いいえ
           </Button>
         </div>

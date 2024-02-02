@@ -36,14 +36,14 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
 
   return (
     <div>
-      <ul className='px-4 mb-40'>
+      <ul className='mb-40 px-4'>
         {sortedFollowersArray.map((follower) => (
           <li key={follower.id} className='mt-5'>
             <div className='flex justify-between'>
               <div className='flex'>
                 <div>
                   <Image
-                    className='rounded-full mx-auto border-2 border-[#FFFFFF]'
+                    className='mx-auto rounded-full border-2 border-[#FFFFFF]'
                     src={follower.user.icon || dummyImageUrl}
                     alt='プロフィール画像'
                     width={40}
@@ -56,7 +56,7 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
                       <p
                         className={`${
                           !approvedFollowsId.has(follower.userId) && 'pt-1'
-                        } overflow-hidden line-clamp-1 max-w-[172px] text-sm`}
+                        } line-clamp-1 max-w-[172px] overflow-hidden text-sm`}
                       >
                         {follower.user.name}
                       </p>
@@ -68,13 +68,13 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
                     <p
                       className={`${
                         !approvedFollowsId.has(follower.userId) && 'pt-1'
-                      } overflow-hidden line-clamp-1 max-w-[192px] text-sm`}
+                      } line-clamp-1 max-w-[192px] overflow-hidden text-sm`}
                     >
                       {follower.user.name}
                     </p>
                   )}
                   {approvedFollowsId.has(follower.userId) && (
-                    <div className='bg-gray-300 text-center text-[10px] p-[2px] rounded w-[96px]'>フォローしています</div>
+                    <div className='w-[96px] rounded bg-gray-300 p-[2px] text-center text-[10px]'>フォローしています</div>
                   )}
                 </div>
               </div>
@@ -99,7 +99,7 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
               </div>
             </div>
             <p
-              className={`text-justify ml-[41px] flex flex-row flex-wrap w-[300px] text-xs ${
+              className={`ml-[41px] flex w-[300px] flex-row flex-wrap text-justify text-xs ${
                 approvedFollowsId.has(follower.userId) && 'mt-1'
               } `}
             >
