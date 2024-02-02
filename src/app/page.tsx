@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import React from 'react';
 import Link from 'next/link';
-import { Header } from '@/app/components/Header';
+import { Header } from '@/components/layouts/Header';
 
 export default function Home() {
   return (
@@ -18,9 +18,7 @@ export default function Home() {
         </div>
       </Link>
 
-      <p className='mt-5'>
-        ログアウト中 or 未登録の場合は下記へアクセスしてもmiddleware.tsの処理でこのページへ戻ってきます。
-      </p>
+      <p className='mt-5'>ログアウト中 or 未登録の場合は下記へアクセスしてもmiddleware.tsの処理でこのページへ戻ってきます。</p>
       <Link className='text-blue-300' href='/main/home' target='_blank'>
         http://localhost:3000/main/home（ログインユーザーのhomeページ）
       </Link>

@@ -1,16 +1,14 @@
 // src/app/main/home/page.tsx
 import React from 'react';
 import Link from 'next/link';
-import { Posts } from '@/app/main/components/Posts';
-import { Header } from '@/app/main/components/Header';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { Posts } from '@/features/main/home/components/Posts';
+import { Header } from '@/features/main/components/Header';
 
-export default async function Page() {
-  const response = await fetch(`${process.env.URL}/api/user`);
-  if (!response.ok) throw new Error('データの取得に失敗しました。');
-  const resultUser = await response.json();
-  console.log('resultUser:', resultUser);
+export default function Page() {
+  // const response = await fetch(`${process.env.URL}/api/user`);
+  // if (!response.ok) throw new Error('データの取得に失敗しました。');
+  // const resultUser = await response.json();
+  // console.log('resultUser:', resultUser);
 
   //サーバーコンポーネント
   //ここでつぶやきをfetchしてPostsコンポーネントに渡す

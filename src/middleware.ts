@@ -1,7 +1,6 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { REDIRECT_PATHS } from './const/url';
+import { NextResponse, NextRequest } from 'next/server';
+import { REDIRECT_PATHS } from '@/constants/url';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
@@ -14,6 +13,7 @@ export async function middleware(req: NextRequest) {
 
   const token = session?.access_token;
   const path = req.nextUrl.pathname;
+  console.log(token);
 
   if (error) console.log('ミドルウェアでのエラー: ', error);
 

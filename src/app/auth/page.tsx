@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Signin } from '@/app/auth/components/Signin';
-import { Signup } from '@/app/auth/components/Signup';
+import { Signin } from '@/features/auth/components/Signin';
+import { Signup } from '@/features/auth/components/Signup';
 
 export default function Page() {
   const [display, setDisplay] = useState<string>('login');

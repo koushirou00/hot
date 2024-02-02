@@ -1,43 +1,49 @@
 import prisma from '@/lib/prisma';
-import { getAuthUser } from '@/functions/route/getAuthUser';
 import { NextRequest, NextResponse } from 'next/server';
+import { supabaseServer } from '@/lib/supabaseServer';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const data = await getAuthUser();
-    const userId = data?.userData.id;
-    const user = await prisma.user.findUnique({
+    const token = request.headers.get('Authorization')?.split(' ')[1];
+    const supabase = supabaseServer();
+    const { data: user, error } = await supabase.auth.getUser(token);
+    if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
+
+    const getUser = await prisma.user.findUnique({
       where: {
-        id: userId
+        id: user.user.id
       }
     });
 
-    if (!user) {
+    if (!getUser) {
       return NextResponse.json({
         error: 'ユーザーが存在しません',
         status: 403
       });
     }
-    return NextResponse.json({ user: user, status: 200 });
+
+    return NextResponse.json({ user: getUser, status: 200 });
   } catch (error) {
     return NextResponse.json(error);
   }
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
-    const data = await getAuthUser();
-    if (!data) return NextResponse.json({ status: 401, error: 'ユーザーデータの取得に失敗' });
-    const userId = data?.userData.id;
+    const token = request.headers.get('Authorization')?.split(' ')[1];
+    const supabase = supabaseServer();
+    const { data: user, error } = await supabase.auth.getUser(token);
+    if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
+
     const existingUser = await prisma.user.findUnique({
       where: {
-        id: userId
+        id: user.user.id
       }
     });
 
     if (!existingUser) {
       const newUser = await prisma.user.create({
-        data: { id: userId }
+        data: { id: user.user.id }
       });
       return NextResponse.json({ status: 200, newUser: newUser });
     }
@@ -47,6 +53,7 @@ export async function POST() {
       status: 403
     });
   } catch (error) {
+    console.log('エラー');
     console.log(error);
     return NextResponse.json(error);
   }

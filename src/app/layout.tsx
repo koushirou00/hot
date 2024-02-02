@@ -6,14 +6,10 @@ export const metadata: Metadata = {
   description: 'WEBサイトHOTの登録済みユーザーのみが閲覧できるページです。'
 };
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='ja'>
-      <body className='max-w-[375px] mx-auto'>{children}</body>
+      <body className='mx-auto'>{children}</body>
     </html>
   );
 }
