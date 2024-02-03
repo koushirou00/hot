@@ -2,7 +2,7 @@
 import { Loading } from '@/components/layouts/Loading';
 import React from 'react';
 import Link from 'next/link';
-import { postUser } from '@/functions/user/postUser';
+import { postUser } from '@/functions/api/user/postUser';
 
 export default async function Page() {
   const result = await postUser();

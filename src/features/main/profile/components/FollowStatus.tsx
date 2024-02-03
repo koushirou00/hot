@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import React from 'react';
 import Link from 'next/link';
-import { fetchFollow } from '@/functions/follow/fetchFollow';
+import { fetchFollow } from '@/functions/api/follow/fetchFollow';
 
 type FollowStatusProps = {
   user: User;
@@ -21,7 +21,7 @@ export const FollowStatus: React.FC<FollowStatusProps> = async ({ user }) => {
   const followsArray = response?.follows;
 
   return (
-    <div className='mt-4 flex justify-around items-center text-center'>
+    <div className='mt-4 flex items-center justify-around text-center'>
       <div>
         <Link href={'/main/profile/follow-detail?tab=followers'}>
           <p>{followersArray.length}</p>

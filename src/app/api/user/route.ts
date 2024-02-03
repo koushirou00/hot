@@ -1,12 +1,10 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseServer } from '@/lib/supabaseServer';
+import { getCurrentUser } from '@/utils/getCurrentUser';
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.headers.get('Authorization')?.split(' ')[1];
-    const supabase = supabaseServer();
-    const { data: user, error } = await supabase.auth.getUser(token);
+    const { data: user, error } = await getCurrentUser(request);
     if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 
     const getUser = await prisma.user.findUnique({
@@ -30,9 +28,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.headers.get('Authorization')?.split(' ')[1];
-    const supabase = supabaseServer();
-    const { data: user, error } = await supabase.auth.getUser(token);
+    const { data: user, error } = await getCurrentUser(request);
     if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 
     const existingUser = await prisma.user.findUnique({
@@ -62,8 +58,8 @@ export async function POST(request: NextRequest) {
 // プロフィール情報編集用_未実装
 // export async function PATCH(request: NextRequest) {
 //   try {
-//     const data = await getAuthUser();
-//     const userId = data?.userData.id;
+// const { data: user, error } = await getCurrentUser(request);
+// if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 //     const body = await request.json()
 
 //     const user = await prisma.user.upsert({

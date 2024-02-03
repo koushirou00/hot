@@ -1,6 +1,6 @@
 import React from 'react';
 import { FollowStatus } from '@/features/main/profile/components/FollowStatus';
-import { fetchUserProfile } from '@/functions/user/fetchUserProfile';
+import { fetchUserProfile } from '@/functions/api/user/fetchUserProfile';
 import { dummyImageUrl } from '@/features/main/constants/dummyImage';
 
 import Image from 'next/image';
@@ -10,11 +10,11 @@ export const Contents: React.FC = async () => {
 
   return (
     <div>
-      <div className='h-16 flex justify-center items-center bg-[#EFE6E0] border-b border-black'>プロフィール</div>
+      <div className='flex h-16 items-center justify-center border-b border-black bg-[#EFE6E0]'>プロフィール</div>
       <div className='pt-6'>
         <div>
           <Image
-            className='rounded-full mx-auto border-2 border-[#FFFFFF]'
+            className='mx-auto rounded-full border-2 border-[#FFFFFF]'
             src={user.icon || dummyImageUrl}
             alt='プロフィール画像'
             width={114}
@@ -28,7 +28,7 @@ export const Contents: React.FC = async () => {
           </p>
           <p className='mt-4'>{user.introduction || 'よろしくお願いします'}</p>
         </div>
-        <div className='flex mt-4'>
+        <div className='mt-4 flex'>
           <div>
             <Image
               className='rounded'

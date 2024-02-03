@@ -1,5 +1,5 @@
 // src/functions/getUserProfile.ts
-import { getAuthToken } from '@/functions/getAuthToken';
+import { getAuthToken } from '@/utils/getAuthToken';
 
 export async function fetchUserProfile() {
   try {

@@ -1,6 +1,6 @@
 // src/app/main/profile/follow-detail/page.tsx
 import React from 'react';
-import { fetchFollow } from '@/functions/follow/fetchFollow';
+import { fetchFollow } from '@/functions/api/follow/fetchFollow';
 import { Header } from '@/features/main/profile/follow-detail/components/Header';
 import { Contents } from '@/features/main/profile/follow-detail/components/Contents';
 

@@ -1,4 +1,4 @@
-import { getAuthToken } from '@/functions/getAuthToken';
+import { getAuthToken } from '@/utils/getAuthToken';
 
 export async function postUser() {
   try {

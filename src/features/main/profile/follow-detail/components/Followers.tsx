@@ -1,19 +1,21 @@
-// src/app/main/profile/follow-detail/components/Followers.tsx
+// src/features/main/profile/follow-detail/components/Followers.tsx
+'use client';
 import React, { useState } from 'react';
 import { FollowArrayProps } from '@/types/follow';
+import { dummyImageUrl } from '@/features/main/constants/dummyImage';
 import { ConfirmDialog } from '@/components/elements/ConfirmDialog';
 import { Button } from '@/components/elements/Button';
 import Image from 'next/image';
-import { dummyImageUrl } from '@/features/main/constants/dummyImage';
 
 export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
-  const [showDialog, setShowDialog] = useState<{ action: string; followerId: string } | null>(null);
+  const [showDialog, setShowDialog] = useState<{ text: string; followerId: string } | null>(null);
   const followsArray = followArray.follows;
   const followersArray = followArray.followers;
 
   // フォロー中（承認されている）
   const approvedFollows = followsArray.filter((follow) => follow.status === 'approved');
   const approvedFollowsId = new Set(approvedFollows.map((user) => user.followingId)); //相手のuserId
+  const isFollow = (id: string) => approvedFollowsId.has(id); //true：フォロー中（許可済み）
 
   // 'pending' ステータスのフォローを先頭、次にフォローしているユーザーが来るように並び替える
   const sortedFollowersArray = followersArray.sort((a, b) => {
@@ -25,8 +27,8 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
   });
 
   const handleDialogClose = (confirm: boolean) => {
-    if (!confirm) {
-      console.log(showDialog?.action);
+    if (confirm) {
+      console.log(showDialog?.text);
       // 下記でフォローを承諾or拒否するapiを叩く。
       // 承諾ならPATCH、拒否ならDELETE
       // await followerApi(followId);
@@ -53,11 +55,7 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
                 <div className='ml-1'>
                   {follower.user.lock ? (
                     <div className='flex'>
-                      <p
-                        className={`${
-                          !approvedFollowsId.has(follower.userId) && 'pt-1'
-                        } line-clamp-1 max-w-[172px] overflow-hidden text-sm`}
-                      >
+                      <p className={`${!isFollow(follower.userId) && 'mt-1'} line-clamp-1 max-w-[172px] overflow-hidden text-sm`}>
                         {follower.user.name}
                       </p>
                       <span role='img' aria-label='locked'>
@@ -73,7 +71,7 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
                       {follower.user.name}
                     </p>
                   )}
-                  {approvedFollowsId.has(follower.userId) && (
+                  {isFollow(follower.userId) && (
                     <div className='w-[96px] rounded bg-gray-300 p-[2px] text-center text-[10px]'>フォローしています</div>
                   )}
                 </div>
@@ -81,26 +79,33 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
               <div>
                 {follower.status === 'pending' && (
                   <div className='flex justify-around'>
-                    <Button onClick={() => setShowDialog({ action: 'rejection', followerId: follower.id })} variant='rejection'>
+                    <Button
+                      onClick={() =>
+                        setShowDialog({
+                          text: `フォロー申請を拒否しますか？\n※拒否したことは相手ユーザーへ通知されません`,
+                          followerId: follower.id
+                        })
+                      }
+                      variant='rejection'
+                    >
                       拒否
                     </Button>
-                    <Button onClick={() => setShowDialog({ action: 'approve', followerId: follower.id })} variant='approve'>
+                    <Button
+                      onClick={() => setShowDialog({ text: 'フォローリクエストを承諾しますか？', followerId: follower.id })}
+                      variant='approve'
+                    >
                       承諾
                     </Button>
                     {showDialog?.followerId === follower.id && (
-                      <ConfirmDialog
-                        show={showDialog !== null}
-                        action={showDialog?.action}
-                        onClose={(confirm) => handleDialogClose(confirm)}
-                      />
+                      <ConfirmDialog onClose={(confirm) => handleDialogClose(confirm)} text={showDialog?.text} />
                     )}
                   </div>
                 )}
               </div>
             </div>
             <p
-              className={`ml-[41px] flex w-[300px] flex-row flex-wrap text-justify text-xs ${
-                approvedFollowsId.has(follower.userId) && 'mt-1'
+              className={`ml-[42px] flex w-[300px] flex-row flex-wrap text-justify text-xs ${
+                !isFollow(follower.userId) ? 'mt-[-6px]' : 'mt-1'
               } `}
             >
               {follower.user.introduction}
