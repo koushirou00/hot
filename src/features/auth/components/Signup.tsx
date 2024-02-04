@@ -1,36 +1,35 @@
 'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabaseClient } from '@/app/utils/supabase';
 
-export const Signin: React.FC = () => {
+import React from 'react';
+import { supabaseClient } from '@/lib/supabaseClient';
+import { useState } from 'react';
+
+export const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
+
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: { emailRedirectTo: `http://localhost:3000/auth/complete` }
     });
 
-    if (error) {
-      alert('ログインに失敗しました');
+    // 登録されているメールアドレスの場合、空の配列が返る
+    const identities = data.user?.identities;
+
+    if (error) return alert('登録に失敗しました');
+    console.log(error);
+
+    if (identities?.length === 0) {
+      alert('既に登録済みのメールアドレスです。');
     } else {
-      router.replace('/main/home');
+      setEmail('');
+      setPassword('');
+      alert('確認メールを送信しました。');
     }
-
-    // 下記はユーザーがUserモデル上から取得するページ。
-    // このログインページでは不要。
-
-    // const response = await fetch('/api/user', {
-    //   headers: { Authorization: `Bearer ${data.session.access_token}` }
-    // });
-    // const result = await response.json();
-    // console.log(result);
-    // if (result?.status === 401) return alert('認証に失敗しました。時間をおいてお試しください');
-    // if (response.ok) return router.replace('/main/home');
   };
 
   return (
@@ -47,7 +46,8 @@ export const Signin: React.FC = () => {
             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             placeholder='name@company.com'
             required
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
         </div>
         <div>
@@ -61,7 +61,8 @@ export const Signin: React.FC = () => {
             placeholder='••••••••'
             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             required
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
         </div>
 
@@ -70,7 +71,7 @@ export const Signin: React.FC = () => {
             type='submit'
             className='w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
           >
-            ログイン
+            登録
           </button>
         </div>
       </form>

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { supabaseClient } from '../utils/supabase';
+import { supabaseClient } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 
 export const Header: React.FC = () => {
@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className='p-2 text-white bg-blue-950 flex justify-around items-center'>
-      <div>ここはヘッダーです</div>
+      <div>ログイン中のヘッダーです</div>
       <button onClick={handleLogout} className='p-3 bg-white text-black rounded'>
         ログアウト
       </button>

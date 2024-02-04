@@ -1,50 +1,54 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import prisma from '@/lib/prisma';
-import { supabase } from '@/app/utils/supabase';
 import { NextRequest, NextResponse } from 'next/server';
+import { getCurrentUser } from '@/utils/supabase/getCurrentUser';
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.headers.get('Authorization')?.split(' ')[1];
-    const { data, error } = await supabase.auth.getUser(token);
+    const { data: user, error } = await getCurrentUser(request);
     if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 
-    const user = await prisma.user.findUnique({
+    const getUser = await prisma.user.findUnique({
       where: {
-        id: data.user.id
+        id: user.user.id
       }
     });
 
-    return NextResponse.json(user);
+    if (!getUser) {
+      return NextResponse.json({
+        error: 'ユーザーが存在しません',
+        status: 403
+      });
+    }
+
+    return NextResponse.json({ user: getUser, status: 200 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.headers.get('Authorization')?.split(' ')[1];
-    const { data: userData, error: authError } = await supabase.auth.getUser(token);
-    if (authError || !userData) {
-      return NextResponse.json({ error: '認証失敗', status: 401 });
-    }
-    const authUserId = userData.user.id;
+    const { data: user, error } = await getCurrentUser(request);
+    if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 
     const existingUser = await prisma.user.findUnique({
-      where: { id: authUserId }
+      where: {
+        id: user.user.id
+      }
     });
 
     if (!existingUser) {
       const newUser = await prisma.user.create({
-        data: { id: authUserId }
+        data: { id: user.user.id }
       });
-      return NextResponse.json(newUser);
+      return NextResponse.json({ status: 200, newUser: newUser });
     }
 
-    return NextResponse;
+    return NextResponse.json({
+      error: 'すでに登録されているユーザーです',
+      status: 403
+    });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(error);
   }
 }
@@ -52,15 +56,13 @@ export async function POST(request: NextRequest) {
 // プロフィール情報編集用_未実装
 // export async function PATCH(request: NextRequest) {
 //   try {
-//     const token = request.headers.get('Authorization')?.split(' ')[1];
-//     const { data, error } = await supabase.auth.getUser(token);
-//     if (error) return NextResponse.json({ error: '認証失敗', status: 401 });
-
+// const { data: user, error } = await getCurrentUser(request);
+// if (error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 //     const body = await request.json()
 
 //     const user = await prisma.user.upsert({
 //       where: {
-//         id: data.user.id;
+//         id: userId;
 //       }
 //       update: {
 //         name: body.name?,

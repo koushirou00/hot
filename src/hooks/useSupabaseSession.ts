@@ -1,6 +1,6 @@
 // src/app/_hooks/useSupabaseSession.ts
 'use client';
-import { supabase } from '@/app/utils/supabase';
+import { supabaseClient } from '@/lib/supabaseClient';
 import { Session } from '@supabase/supabase-js';
 import { useState, useEffect } from 'react';
 
@@ -15,7 +15,7 @@ export const useSupabaseSession = () => {
       const {
         data: { session },
         error
-      } = await supabase.auth.getSession();
+      } = await supabaseClient.auth.getSession();
       setSession(session);
       setToken(session?.access_token || null);
       setIsLoading(false);

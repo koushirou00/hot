@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ---　イベント関連 ----- 
@@ -17,6 +18,7 @@ model Event {
   updatedAt    DateTime        @updatedAt @map("updated_at")
   eventDate    DateTime        @map("event_date")
   name         String          @unique
+  venue        String
   prefectureId Int             @map("prefecture_id")
   prefecture   Prefecture      @relation(fields: [prefectureId], references: [id])
   follower     EventFollower[]
@@ -54,9 +56,7 @@ model User {
   id                  String               @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   createdAt           DateTime             @default(now()) @map("created_at")
   updatedAt           DateTime             @updatedAt @map("updated_at")
-  name                String?               @default("NO NAME")
-  // email               String               @unique auth機能でカバー
-  // hashedPassword      String               @unique @map("hashed_password") auth機能でカバー
+  name                String               @default("NO NAME")
   icon                String?
   introduction        String?
   instagram           String?
@@ -81,14 +81,14 @@ model User {
 }
 
 model Follow {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  userId      String   @map("user_id") @db.Uuid
-  followingId String   @map("following_id") @db.Uuid
-  status      String   @default("approved")
-  user        User     @relation("UserFollows", fields: [userId], references: [id])
-  following   User     @relation("UserFollowers", fields: [followingId], references: [id])
+  id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  userId        String   @map("user_id") @db.Uuid
+  followingId   String   @map("following_id") @db.Uuid
+  status        String   @default("approved")
+  user          User     @relation("UserFollows", fields: [userId], references: [id])
+  followingUser User     @relation("UserFollowers", fields: [followingId], references: [id])
 
   @@map("follow")
 }
@@ -236,7 +236,7 @@ model NotificationSetting {
   @@map("notification_setting")
 }
 
-// ---　問い合わせ ----- S
+// ---　問い合わせ -----
 model Contact {
   id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")

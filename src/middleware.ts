@@ -1,6 +1,6 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+import { REDIRECT_PATHS } from '@/constants/url';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
@@ -14,12 +14,11 @@ export async function middleware(req: NextRequest) {
   const token = session?.access_token;
   const path = req.nextUrl.pathname;
 
-  console.log('error: ', error);
-  console.log('token:', token);
+  if (error) console.log('ミドルウェアでのエラー: ', error);
 
   // ログインしていない場合、"/main"以下を"/"へリダイレクト
   if (!token && path.startsWith('/main')) {
-    return NextResponse.redirect(new URL('/', req.url));
+    return NextResponse.redirect(new URL(REDIRECT_PATHS.unauthenticated, req.url));
   }
 
   if (path === '/auth/complete') {
@@ -29,7 +28,7 @@ export async function middleware(req: NextRequest) {
 
   // ログインしている場合、"/auth"と"/"（トップページ）を"/main/home"へリダイレクト
   if (token && (path === '/auth' || path === '/')) {
-    return NextResponse.redirect(new URL('/main/home', req.url));
+    return NextResponse.redirect(new URL(REDIRECT_PATHS.authenticated, req.url));
   }
 
   return res;
