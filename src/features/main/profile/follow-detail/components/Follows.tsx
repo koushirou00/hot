@@ -1,16 +1,21 @@
 // src/features/main/profile/follow-detail/components/Follows.tsx
+'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FollowArrayProps } from '@/types/follow';
 import { ConfirmDialog } from '@/components/elements/ConfirmDialog';
 import Image from 'next/image';
 
 import { Button } from '@/components/elements/Button';
 import { dummyImageUrl } from '@/features/main/constants/dummyImage';
+import { deleteFollow } from '@/functions/api/follow/deleteFollow';
+import { toastPromise } from '@/utils/toastify/toast';
 
 export const Follows: React.FC<FollowArrayProps> = ({ followArray }) => {
-  const [showDialog, setShowDialog] = useState<{ text: string; followId: string } | null>(null);
   const followsArray = followArray.follows;
   const followersArray = followArray.followers;
+  const [showDialog, setShowDialog] = useState<{ text: string; followId: string } | null>(null);
+  const router = useRouter();
 
   // フォロー中（承認されている）
   const approvedFollows = followsArray.filter((follow) => follow.status === 'approved');
@@ -34,13 +39,12 @@ export const Follows: React.FC<FollowArrayProps> = ({ followArray }) => {
     return 0;
   });
 
-  // レコード変更API
-  const handleDialogClose = (confirm: boolean) => {
-    if (confirm) {
-      console.log(showDialog?.text);
-      // 下記でフォローを承諾or拒否するapiを叩く。
-      // 承諾ならPATCH、拒否ならDELETE
-      // await followerApi(followId);
+  // フォロー削除
+  const handleDialog = async (confirm: boolean) => {
+    if (confirm && showDialog) {
+      const result = await toastPromise(deleteFollow(showDialog.followId));
+      console.log(result);
+      router.refresh();
     }
     setShowDialog(null);
   };
@@ -106,7 +110,7 @@ export const Follows: React.FC<FollowArrayProps> = ({ followArray }) => {
                   </Button>
                 )}
                 {showDialog?.followId === follow.id && (
-                  <ConfirmDialog text={showDialog?.text} onClose={(confirm) => handleDialogClose(confirm)} />
+                  <ConfirmDialog text={showDialog?.text} onClose={(confirm) => handleDialog(confirm)} />
                 )}
               </div>
             </div>

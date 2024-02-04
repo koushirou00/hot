@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser } from '@/utils/getCurrentUser';
+import { getCurrentUser } from '@/utils/supabase/getCurrentUser';
 
 export async function GET(request: NextRequest) {
   try {
@@ -49,8 +49,6 @@ export async function POST(request: NextRequest) {
       status: 403
     });
   } catch (error) {
-    console.log('エラー');
-    console.log(error);
     return NextResponse.json(error);
   }
 }

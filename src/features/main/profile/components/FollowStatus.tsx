@@ -1,11 +1,6 @@
-import { User } from '@prisma/client';
 import React from 'react';
 import Link from 'next/link';
-import { fetchFollow } from '@/functions/api/follow/fetchFollow';
-
-type FollowStatusProps = {
-  user: User;
-};
+import { getFollow } from '@/functions/api/follow/getFollow';
 
 // async function fetchFollwEvents(userId: string) {
 //   const host = headers().get('host');
@@ -15,8 +10,8 @@ type FollowStatusProps = {
 //   return response.json();
 // }
 
-export const FollowStatus: React.FC<FollowStatusProps> = async ({ user }) => {
-  const response = await fetchFollow();
+export const FollowStatus: React.FC = async () => {
+  const response = await getFollow();
   const followersArray = response?.followers;
   const followsArray = response?.follows;
 

@@ -1,16 +1,22 @@
 // src/features/main/profile/follow-detail/components/Followers.tsx
 'use client';
-import React, { useState } from 'react';
 import { FollowArrayProps } from '@/types/follow';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { toast } from 'react-toastify';
+
 import { dummyImageUrl } from '@/features/main/constants/dummyImage';
 import { ConfirmDialog } from '@/components/elements/ConfirmDialog';
+import { deleteFollow } from '@/functions/api/follow/deleteFollow';
+import { approveFollow } from '@/functions/api/follow/approveFollow';
 import { Button } from '@/components/elements/Button';
-import Image from 'next/image';
 
 export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
-  const [showDialog, setShowDialog] = useState<{ text: string; followerId: string } | null>(null);
   const followsArray = followArray.follows;
   const followersArray = followArray.followers;
+  const [showDialog, setShowDialog] = useState<{ action: 'reject' | 'approve'; text: string; followerId: string } | null>(null);
+  const router = useRouter();
 
   // フォロー中（承認されている）
   const approvedFollows = followsArray.filter((follow) => follow.status === 'approved');
@@ -26,14 +32,36 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
     return 0;
   });
 
-  const handleDialogClose = (confirm: boolean) => {
-    if (confirm) {
-      console.log(showDialog?.text);
-      // 下記でフォローを承諾or拒否するapiを叩く。
-      // 承諾ならPATCH、拒否ならDELETE
-      // await followerApi(followId);
+  // フォロー削除
+  const handleDialog = (confirm: boolean) => {
+    if (!confirm || !showDialog) return setShowDialog(null);
+    if (showDialog.action === 'approve') {
+      toast
+        .promise(
+          approveFollow(showDialog.followerId), // Promiseを渡す
+          {
+            pending: 'しばらくお待ちください...',
+            success: '完了いたしました🚀',
+            error: '失敗しました。更新後再度お試しください 🤯'
+          }
+        )
+        .then(() => {
+          router.refresh();
+        });
+    } else {
+      toast
+        .promise(
+          deleteFollow(showDialog.followerId), // Promiseを渡す
+          {
+            pending: 'しばらくお待ちください...',
+            success: '完了いたしました🚀',
+            error: '失敗しました。更新後再度お試しください 🤯'
+          }
+        )
+        .then(() => {
+          router.refresh();
+        });
     }
-    setShowDialog(null);
   };
 
   return (
@@ -82,6 +110,7 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
                     <Button
                       onClick={() =>
                         setShowDialog({
+                          action: 'reject',
                           text: `フォロー申請を拒否しますか？\n※拒否したことは相手ユーザーへ通知されません`,
                           followerId: follower.id
                         })
@@ -91,13 +120,19 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
                       拒否
                     </Button>
                     <Button
-                      onClick={() => setShowDialog({ text: 'フォローリクエストを承諾しますか？', followerId: follower.id })}
+                      onClick={() =>
+                        setShowDialog({
+                          action: 'approve',
+                          text: 'フォローリクエストを承諾しますか？',
+                          followerId: follower.id
+                        })
+                      }
                       variant='approve'
                     >
                       承諾
                     </Button>
                     {showDialog?.followerId === follower.id && (
-                      <ConfirmDialog onClose={(confirm) => handleDialogClose(confirm)} text={showDialog?.text} />
+                      <ConfirmDialog onClose={(confirm) => handleDialog(confirm)} text={showDialog?.text} />
                     )}
                   </div>
                 )}

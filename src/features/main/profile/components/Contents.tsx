@@ -6,7 +6,8 @@ import { dummyImageUrl } from '@/features/main/constants/dummyImage';
 import Image from 'next/image';
 
 export const Contents: React.FC = async () => {
-  const { user } = await fetchUserProfile();
+  const user = await fetchUserProfile();
+  console.log(user);
 
   return (
     <div>
@@ -51,7 +52,7 @@ export const Contents: React.FC = async () => {
           </div>
         </div>
       </div>
-      <FollowStatus user={user} />
+      <FollowStatus />
     </div>
   );
 };

@@ -1,0 +1,23 @@
+.Toastify__toast-theme--colored.Toastify__toast--default {
+  width: 300px;
+  margin: 10px auto 0;
+  border-radius: 5px;
+  /* promiseロード中のスタイル */
+  --toastify-color-light: #37af47;
+  --toastify-text-color-light: #f9f9f9;
+  --toastify-spinner-color: #ffffff;
+  --toastify-spinner-color-empty-area: #b6b6b6be;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--info,
+.Toastify__toast-theme--colored.Toastify__toast--success,
+.Toastify__toast-theme--colored.Toastify__toast--warning,
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  width: 300px;
+  margin: 10px auto 0;
+  border-radius: 5px;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  --toastify-color-success: #e65738;
+}
