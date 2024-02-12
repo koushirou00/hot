@@ -4,13 +4,13 @@ import { FollowArrayProps } from '@/types/follow';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { toast } from 'react-toastify';
 
 import { dummyImageUrl } from '@/features/main/constants/dummyImage';
-import { ConfirmDialog } from '@/components/elements/ConfirmDialog';
+import { ConfirmDialog } from '@/components/layouts/ConfirmDialog';
 import { deleteFollow } from '@/functions/api/follow/deleteFollow';
 import { approveFollow } from '@/functions/api/follow/approveFollow';
 import { Button } from '@/components/elements/Button';
+import { toastPromise } from '@/utils/toastify/toast';
 
 export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
   const followsArray = followArray.follows;
@@ -32,36 +32,17 @@ export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
     return 0;
   });
 
-  // フォロー削除
-  const handleDialog = (confirm: boolean) => {
+  // フォロー許可 or 削除
+  const handleDialog = async (confirm: boolean) => {
     if (!confirm || !showDialog) return setShowDialog(null);
     if (showDialog.action === 'approve') {
-      toast
-        .promise(
-          approveFollow(showDialog.followerId), // Promiseを渡す
-          {
-            pending: 'しばらくお待ちください...',
-            success: '完了いたしました🚀',
-            error: '失敗しました。更新後再度お試しください 🤯'
-          }
-        )
-        .then(() => {
-          router.refresh();
-        });
+      await toastPromise<Response>(approveFollow(showDialog.followerId));
+      router.refresh();
     } else {
-      toast
-        .promise(
-          deleteFollow(showDialog.followerId), // Promiseを渡す
-          {
-            pending: 'しばらくお待ちください...',
-            success: '完了いたしました🚀',
-            error: '失敗しました。更新後再度お試しください 🤯'
-          }
-        )
-        .then(() => {
-          router.refresh();
-        });
+      await toastPromise<Response>(deleteFollow(showDialog.followerId));
+      router.refresh();
     }
+    setShowDialog(null);
   };
 
   return (

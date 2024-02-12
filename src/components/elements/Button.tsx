@@ -1,7 +1,7 @@
 // Button.tsx
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
-type ButtonProps = React.ComponentProps<'button'> & {
+type ButtonProps = ComponentProps<'button'> & {
   variant?: 'primary' | 'cancel' | 'follow' | 'unfollow' | 'unpending' | 'approve' | 'rejection' | 'block';
 };
 
@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
   let additionalClassName = '';
   switch (props.variant) {
     case 'primary':
-      additionalClassName = 'bg-blue-500 text-white py-[6px] px-5';
+      additionalClassName = 'bg-[#E65738] text-white py-[6px] px-5';
       break;
     case 'cancel':
       additionalClassName = 'border border-gray-400 py-[6px] px-3 text-gray-500';

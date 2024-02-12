@@ -1,14 +1,15 @@
 // src/app/main/profile/page.tsx
 import React, { Suspense } from 'react';
-import { Contents } from '@/features/main/profile/components/Contents';
+import { fetchUserProfile } from '@/functions/api/user/fetchUserProfile';
 import { Loading } from '@/components/layouts/Loading';
+import { Contents } from '@/features/main/profile/components/Contents';
 
 export default async function Page() {
-  //サーバーコンポーネント
-  //ここでつぶやきをfetchしてPostsコンポーネントに渡す
+  const { user } = await fetchUserProfile();
+
   return (
     <Suspense fallback={<Loading />}>
-      <Contents />
+      <Contents user={user} />
     </Suspense>
   );
 }

@@ -32,3 +32,39 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(error);
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const { data: user, error } = await getCurrentUser(request);
+    if (!user || error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
+
+    const body = await request.json();
+    const follows = await prisma.follow.findMany({
+      where: {
+        userId: body.targetUserId
+      }
+    });
+
+    return NextResponse.json({ follows: follows, status: 200 });
+  } catch (error) {
+    return NextResponse.json(error);
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const { data: user, error } = await getCurrentUser(request);
+    if (!user || error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
+
+    const body = await request.json();
+
+    await prisma.follow.update({
+      where: { id: body.recordId },
+      data: { status: 'approved' }
+    });
+
+    return NextResponse.json({ message: 'success', status: 200 });
+  } catch (error) {
+    return NextResponse.json(error);
+  }
+}

@@ -1,18 +1,18 @@
-import React from 'react';
-import { headers } from 'next/headers';
-import Image from 'next/image';
+// src/app/main/profile/edit/page.tsx
+import React, { Suspense } from 'react';
+import { fetchUserProfile } from '@/functions/api/user/fetchUserProfile';
+import { Loading } from '@/components/layouts/Loading';
+import { Contents } from '@/features/main/profile/edit/components/Contents';
+import { PageBackHeader } from '@/features/main/components/PageBackHeader';
 
-async function patchUserData(userId: string) {
-  const host = headers().get('host');
-  const response = await fetch(`http://${host}/api/user`, {
-    method: 'PATCH'
-  });
-  if (!response.ok) throw new Error(`ユーザー情報更新のAPIで失敗しました: ${response}`);
-  return response.json();
+export default async function Page() {
+  const { user } = await fetchUserProfile();
+  return (
+    <div>
+      <PageBackHeader url='/main/profile' text='プロフィールに戻る' />
+      <Suspense fallback={<Loading />}>
+        <Contents user={user} />
+      </Suspense>
+    </div>
+  );
 }
-
-export const Contents: React.FC = async () => {
-  //user情報を受け取る
-
-  return <div></div>;
-};
