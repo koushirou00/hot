@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { FollowArrayProps } from '@/types/follow';
-import { Follows } from '@/features/main/profile/follow-detail/components/Follows';
-import { Followers } from '@/features/main/profile/follow-detail/components/Followers';
+import { Follows } from '@/app/main/profile/follow-detail/_components/Follows';
+import { Followers } from '@/app/main/profile/follow-detail/_components/Followers';
 import { Loading } from '@/components/layouts/Loading';
 
 export const Contents: React.FC<FollowArrayProps> = ({ followArray }) => {

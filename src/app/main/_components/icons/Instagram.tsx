@@ -27,10 +27,10 @@ export const InstagramIcon: React.FC<SnsIconProps> = ({ setColor }) => {
               gradientUnits='userSpaceOnUse'
               gradientTransform='translate(7.63175 28.5644) rotate(-90) scale(26.285 24.4471)'
             >
-              <stop stop-color='#FFDD55' />
-              <stop offset='0.1' stop-color='#FFDD55' />
-              <stop offset='0.5' stop-color='#FF543E' />
-              <stop offset='1' stop-color='#C837AB' />
+              <stop stopColor='#FFDD55' />
+              <stop offset='0.1' stopColor='#FFDD55' />
+              <stop offset='0.5' stopColor='#FF543E' />
+              <stop offset='1' stopColor='#C837AB' />
             </radialGradient>
             <radialGradient
               id='paint1_radial_201_246'
@@ -40,9 +40,9 @@ export const InstagramIcon: React.FC<SnsIconProps> = ({ setColor }) => {
               gradientUnits='userSpaceOnUse'
               gradientTransform='translate(-3.85558 1.9105) rotate(78.681) scale(11.7495 48.432)'
             >
-              <stop stop-color='#3771C8' />
-              <stop offset='0.128' stop-color='#3771C8' />
-              <stop offset='1' stop-color='#6600FF' stop-opacity='0' />
+              <stop stopColor='#3771C8' />
+              <stop offset='0.128' stopColor='#3771C8' />
+              <stop offset='1' stopColor='#6600FF' stopOpacity='0' />
             </radialGradient>
           </defs>
         </svg>

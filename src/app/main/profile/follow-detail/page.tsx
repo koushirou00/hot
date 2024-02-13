@@ -1,8 +1,8 @@
 // src/app/main/profile/follow-detail/page.tsx
 import React from 'react';
 import { getFollow } from '@/functions/api/follow/getFollow';
-import { PageBackHeader } from '@/features/main/components/PageBackHeader';
-import { Contents } from '@/features/main/profile/follow-detail/components/Contents';
+import { PageBackHeader } from '@/app/main/_components/PageBackHeader';
+import { Contents } from '@/app/main/profile/follow-detail/_components/Contents';
 
 export default async function Page() {
   const response = await getFollow();

@@ -1,15 +1,14 @@
-// src/features/main/profile/edit/components/Contents.tsx
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { UserProps } from '@/types/UserProps';
-import { useEditForm } from '@/features/main/profile/edit/hooks/useEditForm';
+import { useEditForm } from '@/app/main/profile/edit/_hooks/useEditForm';
 import { Button } from '@/components/elements/Button';
 import { Label } from '@/components/elements/Label';
 import { Input } from '@/components/elements/Input';
 import { Textarea } from '@/components/elements/Textarea';
 import { ImageSelecter } from './ImageSelecter';
-import { LockIcon } from '@/features/main/components/icons/lock';
+import { LockIcon } from '@/app/main/_components/icons/lock';
 
 export const Contents: React.FC<UserProps> = (userData) => {
   const user = userData.user;

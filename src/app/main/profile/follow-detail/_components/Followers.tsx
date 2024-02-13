@@ -1,11 +1,10 @@
-// src/features/main/profile/follow-detail/components/Followers.tsx
 'use client';
 import { FollowArrayProps } from '@/types/follow';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import { dummyImageUrl } from '@/features/main/constants/dummyImage';
+import { dummyImageUrl } from '@/app/main/_constants/dummyImage';
 import { ConfirmDialog } from '@/components/layouts/ConfirmDialog';
 import { deleteFollow } from '@/functions/api/follow/deleteFollow';
 import { approveFollow } from '@/functions/api/follow/approveFollow';

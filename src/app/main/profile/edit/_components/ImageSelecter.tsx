@@ -1,11 +1,10 @@
-// src/features/main/profile/edit/components/ImageSelect.tsx
 import React, { useRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { UserEditData } from '@/types/userEditData';
 
 import { Input } from '@/components/elements/Input';
 import { Label } from '@/components/elements/Label';
-import { UserIcon } from '@/features/main/components/UserIcon';
+import { UserIcon } from '@/app/main/_components/UserIcon';
 import { toastPromise } from '@/utils/toastify/toast';
 
 type ImageSelecterProps = {

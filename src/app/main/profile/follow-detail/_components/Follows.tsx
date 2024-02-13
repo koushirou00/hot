@@ -1,4 +1,3 @@
-// src/features/main/profile/follow-detail/components/Follows.tsx
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -7,7 +6,7 @@ import { ConfirmDialog } from '@/components/layouts/ConfirmDialog';
 import Image from 'next/image';
 
 import { Button } from '@/components/elements/Button';
-import { dummyImageUrl } from '@/features/main/constants/dummyImage';
+import { dummyImageUrl } from '@/app/main/_constants/dummyImage';
 import { deleteFollow } from '@/functions/api/follow/deleteFollow';
 import { toastPromise } from '@/utils/toastify/toast';
 

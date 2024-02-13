@@ -1,13 +1,12 @@
-// src/features/main/profile/components/Contents.tsx
 import React from 'react';
 import { UserProps } from '@/types/UserProps';
-import { FollowStatus } from '@/features/main/profile/components/FollowStatus';
-import { dummyImageUrl } from '@/features/main/constants/dummyImage';
+import { FollowStatus } from '@/app/main/profile/_components/FollowStatus';
+import { dummyImageUrl } from '@/app/main/_constants/dummyImage';
 import Link from 'next/link';
-import { UserIcon } from '@/features/main/components/UserIcon';
-import { TwitterIcon } from '@/features/main/components/icons/Twitter';
-import { InstagramIcon } from '@/features/main/components/icons/Instagram';
-import { LockIcon } from '@/features/main/components/icons/lock';
+import { UserIcon } from '@/app/main/_components/UserIcon';
+import { TwitterIcon } from '@/app/main/_components/icons/Twitter';
+import { InstagramIcon } from '@/app/main/_components/icons/Instagram';
+import { LockIcon } from '@/app/main/_components/icons/lock';
 
 export const Contents: React.FC<UserProps> = async ({ user }) => {
   return (
@@ -57,7 +56,10 @@ export const Contents: React.FC<UserProps> = async ({ user }) => {
       <FollowStatus />
 
       <div className='mt-7 flex items-center justify-center'>
-        <a href={`${process.env.URL}/main/profile/edit`} className='rounded-md bg-[#E65738] px-5 py-[6px] text-center text-white'>
+        <a
+          href={`${process.env.URL}/main/profile/edit`}
+          className='rounded-md bg-customeOrange px-5 py-[6px] text-center text-white'
+        >
           編集する
         </a>
       </div>

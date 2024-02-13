@@ -1,4 +1,3 @@
-// src/features/main/profile/edit/functions/patchUser.ts
 import { supabaseClient } from '@/lib/supabaseClient';
 import { UserEditData } from '@/types/userEditData';
 

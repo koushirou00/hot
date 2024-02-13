@@ -1,8 +1,8 @@
 // src/app/main/home/page.tsx
 import React from 'react';
 import Link from 'next/link';
-import { Posts } from '@/features/main/home/components/Posts';
-import { Header } from '@/features/main/components/Header';
+import { Posts } from '@/app/main/home/_components/Posts';
+import { Header } from '@/app/main/_components/Header';
 
 export default function Page() {
   // const response = await fetch(`${process.env.URL}/api/user`);

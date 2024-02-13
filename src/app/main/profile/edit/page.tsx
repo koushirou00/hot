@@ -2,8 +2,8 @@
 import React, { Suspense } from 'react';
 import { fetchUserProfile } from '@/functions/api/user/fetchUserProfile';
 import { Loading } from '@/components/layouts/Loading';
-import { Contents } from '@/features/main/profile/edit/components/Contents';
-import { PageBackHeader } from '@/features/main/components/PageBackHeader';
+import { Contents } from '@/app/main/profile/edit/_components/Contents';
+import { PageBackHeader } from '@/app/main/_components/PageBackHeader';
 
 export default async function Page() {
   const { user } = await fetchUserProfile();
