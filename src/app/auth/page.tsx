@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Signin } from '@/features/auth/components/Signin';
-import { Signup } from '@/features/auth/components/Signup';
+import { Signin } from '@/app/auth/_components/Signin';
+import { Signup } from '@/app/auth/_components/Signup';
 
 export default function Page() {
   const [display, setDisplay] = useState<string>('login');
@@ -13,10 +13,10 @@ export default function Page() {
   return (
     <div>
       <div className='mt-3 flex justify-around'>
-        <button className='p-2 bg-slate-900 text-white' onClick={() => handleDisplay('login')}>
+        <button className='bg-slate-900 p-2 text-white' onClick={() => handleDisplay('login')}>
           ログイン
         </button>
-        <button className='p-2 bg-yellow-300' onClick={() => handleDisplay('signup')}>
+        <button className='bg-yellow-300 p-2' onClick={() => handleDisplay('signup')}>
           新規登録
         </button>
       </div>

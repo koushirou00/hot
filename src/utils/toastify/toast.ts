@@ -1,16 +1,17 @@
 import { toast } from 'react-toastify';
 import '@/utils/toastify/toast.css';
 
-type Response = {
-  message: string;
-  status: number;
-};
-
-// カスタムToastの表示関数
-export function toastPromise(promise: Promise<Response>) {
+export function toastPromise<T>(
+  promise: Promise<T>,
+  messages: {
+    pending?: string;
+    success?: string;
+    error?: string;
+  } = {}
+) {
   return toast.promise(promise, {
-    pending: 'しばらくお待ちください...',
-    success: '完了いたしました  🚀',
-    error: '失敗しました。更新後再度お試しください 🤯'
+    pending: messages.pending || 'しばらくお待ちください...',
+    success: messages.success || '完了いたしました 🚀',
+    error: messages.error || '失敗しました。更新後再度お試しください 🤯'
   });
 }

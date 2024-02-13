@@ -1,13 +1,12 @@
-// src/features/main/profile/follow-detail/components/Follows.tsx
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FollowArrayProps } from '@/types/follow';
-import { ConfirmDialog } from '@/components/elements/ConfirmDialog';
+import { ConfirmDialog } from '@/components/layouts/ConfirmDialog';
 import Image from 'next/image';
 
 import { Button } from '@/components/elements/Button';
-import { dummyImageUrl } from '@/features/main/constants/dummyImage';
+import { dummyImageUrl } from '@/app/main/_constants/dummyImage';
 import { deleteFollow } from '@/functions/api/follow/deleteFollow';
 import { toastPromise } from '@/utils/toastify/toast';
 
@@ -42,8 +41,7 @@ export const Follows: React.FC<FollowArrayProps> = ({ followArray }) => {
   // フォロー削除
   const handleDialog = async (confirm: boolean) => {
     if (confirm && showDialog) {
-      const result = await toastPromise(deleteFollow(showDialog.followId));
-      console.log(result);
+      await toastPromise<Response>(deleteFollow(showDialog.followId));
       router.refresh();
     }
     setShowDialog(null);

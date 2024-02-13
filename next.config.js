@@ -6,6 +6,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'placehold.jp',
         port: ''
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        port: '',
+        pathname: '/**'
       }
     ]
   }
