@@ -1,6 +1,6 @@
 import React from 'react';
 
-async function fetchFollow() {
+async function fetchPost() {
   // ここで自分の投稿一覧情報をfetch
 }
 

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='ja'>
-      <body className='flex items-center'>
+      <body className=''>
         {children}
         <ToastContainer
           position='top-center'

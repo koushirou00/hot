@@ -6,12 +6,12 @@ import { Contents } from '@/app/main/profile/edit/_components/Contents';
 import { PageBackHeader } from '@/app/main/_components/PageBackHeader';
 
 export default async function Page() {
-  const { user } = await fetchUserProfile();
+  const { loginUser } = await fetchUserProfile();
   return (
     <div>
-      <PageBackHeader url='/main/profile' text='プロフィールに戻る' />
+      <PageBackHeader />
       <Suspense fallback={<Loading />}>
-        <Contents user={user} />
+        <Contents user={loginUser} />
       </Suspense>
     </div>
   );

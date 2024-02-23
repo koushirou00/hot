@@ -61,8 +61,7 @@ export const useEditForm = (user: User) => {
         data.iconUrl = await imageUploader(data.iconFile, filePath);
       }
 
-      const result = await toastPromise<Response>(patchUserData(data));
-      console.log(result);
+      await toastPromise<Response>(patchUserData(data));
       router.push('/main/profile');
     } catch (error) {
       console.error('フォームの送信に失敗しました。', error);

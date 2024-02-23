@@ -1,4 +1,5 @@
 // src/app/main/home/page.tsx
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import { Posts } from '@/app/main/home/_components/Posts';
@@ -12,15 +13,14 @@ export default function Page() {
 
   //サーバーコンポーネント
   //ここでつぶやきをfetchしてPostsコンポーネントに渡す
+
   return (
     <div>
       <Header />
       <h1 className='text-3xl'>ログインユーザーのHOME(つぶやき一覧ページ)</h1>
-
       <Link className='text-blue-300' href='/main/profile' target='_blank'>
         http://localhost:3000/main/profile（プロフィールページ）
       </Link>
-
       <Posts />
     </div>
   );

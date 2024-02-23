@@ -1,13 +1,15 @@
-import { User, Follow } from '@prisma/client';
+import { User, Follow, Event } from '@prisma/client';
 
+export type FollowData = {
+  follows: ExtendFollow[];
+  followers: ExtendFollow[];
+};
 export type ExtendFollow = Follow & {
   user: User;
   followingUser: User;
 };
-
 export type FollowArrayProps = {
-  followArray: {
-    follows: ExtendFollow[];
-    followers: ExtendFollow[];
-  };
+  loginUserId?: string;
+  otherUserId?: string;
+  followArray: FollowData;
 };

@@ -21,16 +21,16 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(REDIRECT_PATHS.unauthenticated, req.url));
   }
 
-  if (path === '/auth/complete') {
-    console.log('completeはバリデーションなしで通過');
-    return res;
-  }
+  if (path === '/auth/complete') return res;
 
   // ログインしている場合、"/auth"と"/"（トップページ）を"/main/home"へリダイレクト
   if (token && (path === '/auth' || path === '/')) {
     return NextResponse.redirect(new URL(REDIRECT_PATHS.authenticated, req.url));
   }
 
+  // if (token && path.includes(`profile/${session.user.id}`)) {
+  //   return NextResponse.redirect(new URL(REDIRECT_PATHS.myProfile, req.url));
+  // }
   return res;
 }
 

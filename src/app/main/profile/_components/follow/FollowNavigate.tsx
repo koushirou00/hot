@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { FollowArrayProps } from '@/types/follow';
-import { Follows } from '@/app/main/profile/follow-detail/_components/Follows';
-import { Followers } from '@/app/main/profile/follow-detail/_components/Followers';
+import { Follows } from '@/app/main/profile/_components/follow/Follows';
+import { Followers } from '@/app/main/profile/_components/follow/Followers';
 import { Loading } from '@/components/layouts/Loading';
 
-export const Contents: React.FC<FollowArrayProps> = ({ followArray }) => {
+// other = 他者プロフィールの場合: true
+export const FollowNavigate: React.FC<FollowArrayProps> = ({ followArray }) => {
   const searchParams = useSearchParams();
   const [show, setShow] = useState<string>('');
 

@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/utils/supabase/getCurrentUser';
 
+// ログイン中ユーザーの情報
 export async function GET(request: NextRequest) {
   try {
     const { data: user, error } = await getCurrentUser(request);
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
     }
     // キャッシュ対策
     if (getUser.icon?.includes('supabase')) getUser.icon = `${getUser.icon}?updatedAt=${Date.now()}`;
-    return NextResponse.json({ user: getUser, status: 200 });
+    return NextResponse.json({ loginUser: getUser, status: 200 });
   } catch (error) {
     return NextResponse.json(error);
   }

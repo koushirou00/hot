@@ -2,7 +2,7 @@
 import React, { ComponentProps } from 'react';
 
 type ButtonProps = ComponentProps<'button'> & {
-  variant?: 'primary' | 'cancel' | 'follow' | 'unfollow' | 'unpending' | 'approve' | 'rejection' | 'block';
+  variant?: 'primary' | 'cancel' | 'follow' | 'unfollow' | 'reject' | 'approve' | 'delete' | 'block';
 };
 
 export const Button: React.FC<ButtonProps> = (props) => {
@@ -24,13 +24,10 @@ export const Button: React.FC<ButtonProps> = (props) => {
     case 'unfollow':
       additionalClassName = 'bg-blue-400';
       break;
-    case 'unpending':
-      additionalClassName = 'border border-red-500 text-red-500';
-      break;
     case 'approve':
       additionalClassName = 'border border-blue-400 text-blue-400';
       break;
-    case 'rejection':
+    case 'delete':
       additionalClassName = 'mr-3 border border-red-500 text-red-500';
       break;
     case 'block':
@@ -42,7 +39,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
   }
 
   // クラス名を結合する
-  const combinedClassName = `${baseClassName} ${additionalClassName} ${props.className || ''}`;
+  const combinedClassName = `${additionalClassName} ${baseClassName} ${props.className || ''}`;
 
   return (
     <button className={combinedClassName} {...props}>

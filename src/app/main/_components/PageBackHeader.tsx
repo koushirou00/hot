@@ -1,15 +1,13 @@
+'use client';
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-type PageBackProps = {
-  url: string;
-  text: string;
-};
+export const PageBackHeader: React.FC = () => {
+  const router = useRouter();
 
-export const PageBackHeader: React.FC<PageBackProps> = (props) => {
   return (
-    <header className='border-b border-gray-200 bg-opacity-85 p-2 text-center'>
-      <Link href={`${props.url}`} className='flex w-40 items-center justify-between'>
+    <header className='border-b border-gray-200 bg-opacity-85 p-2'>
+      <div onClick={() => router.back()} className='flex w-40 items-center'>
         <svg width='11' height='19' viewBox='0 0 11 19' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M9.60413 18.25L0.854126 9.5L9.60413 0.75'
@@ -19,8 +17,8 @@ export const PageBackHeader: React.FC<PageBackProps> = (props) => {
             strokeLinejoin='round'
           />
         </svg>
-        <h1 className='text-base text-black'>{props.text}</h1>
-      </Link>
+        <h1 className='pl-3 text-base text-black'>戻る</h1>
+      </div>
     </header>
   );
 };

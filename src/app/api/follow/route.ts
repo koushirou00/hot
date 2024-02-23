@@ -35,13 +35,16 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { data: user, error } = await getCurrentUser(request);
-    if (!user || error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
+    const { data: loginUser, error } = await getCurrentUser(request);
+    if (!loginUser || error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 
     const body = await request.json();
-    const follows = await prisma.follow.findMany({
-      where: {
-        userId: body.targetUserId
+
+    const follows = await prisma.follow.create({
+      data: {
+        userId: loginUser.user.id,
+        followingId: body.otherUserId,
+        status: body.lock ? 'pending' : 'approved'
       }
     });
 
