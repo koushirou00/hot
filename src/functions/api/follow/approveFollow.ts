@@ -1,17 +1,11 @@
-import { supabaseClient } from '@/lib/supabaseClient';
+// src/functions/api/follow/approveFollow.ts
+import { clientHeaderOption } from '../utils/clientHeaderOption';
 
 export async function approveFollow(recordId: string) {
   try {
-    // クライアントコンポーネントからの呼び出し
-    const { data, error } = await supabaseClient.auth.getSession();
-    if (error) throw new Error('token取得に失敗');
-    const token = data.session?.access_token;
     const response = await fetch(`/api/follow`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
+      headers: await clientHeaderOption(),
       body: JSON.stringify({
         recordId: recordId
       })

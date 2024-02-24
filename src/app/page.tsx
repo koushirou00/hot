@@ -13,7 +13,7 @@ export default function Home() {
         ※ログイン中ならこのページへアクセスしてもmiddleware.tsによって「http://localhost:3000/main/home（ログインユーザーのhomeページ）」へリダイレクトされる
       </p>
       <Link href={'/auth'}>
-        <div className='w-80 mt-10 mx-auto p-3 text-center bg-orange-600 font-bold border-2 border-black rounded'>
+        <div className='mx-auto mt-10 w-80 rounded border-2 border-black bg-orange-600 p-3 text-center font-bold'>
           ログインまたは会員登録はこちら
         </div>
       </Link>

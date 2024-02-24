@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
         status: 403
       });
     }
+
     // キャッシュ対策
     if (getUser.icon?.includes('supabase')) getUser.icon = `${getUser.icon}?updatedAt=${Date.now()}`;
     return NextResponse.json({ loginUser: getUser, status: 200 });

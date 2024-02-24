@@ -15,14 +15,17 @@ type FollowHandleTriggerProps = {
 const buttonSetting = (handler: string) => {
   let dialogText: string;
   let buttonText: string;
+  let buttonVariant: string = 'primary';
   switch (handler) {
     case 'approveOrRejection':
       dialogText = `フォロー申請を拒否しますか？\n※拒否したことは相手ユーザーへ通知されません`;
       buttonText = '拒否';
+      buttonVariant = 'reject';
       break;
     case 'followerDelete':
       dialogText = `フォロワーから削除しますか？\n※削除したことは相手ユーザーへ通知されません`;
       buttonText = 'このフォロワーを削除';
+      buttonVariant = '';
       break;
     case 'newFollow':
       dialogText = `フォローしますか`;
@@ -35,22 +38,25 @@ const buttonSetting = (handler: string) => {
     case 'followRequestCancel':
       dialogText = 'フォロー申請を解除しますか';
       buttonText = 'フォロー申請中';
+      buttonVariant = 'delete';
       break;
     case 'followDelete':
       dialogText = 'フォローを解除しますか？\n※解除したことは相手ユーザーへ通知されません';
       buttonText = 'フォロー中';
+      buttonVariant = 'delete';
       break;
     default:
+      buttonVariant = 'primary';
       dialogText = '';
       buttonText = '';
   }
-  return { dialogText, buttonText };
+  return { dialogText, buttonText, buttonVariant };
 };
 
 export const FollowHandler: React.FC<FollowHandleTriggerProps> = ({ handler, recordId, otherUserId }) => {
   const { showDialog, setShowDialog, handleDialog } = useFollowHandle();
 
-  const { dialogText, buttonText } = buttonSetting(handler);
+  const { dialogText, buttonText, buttonVariant } = buttonSetting(handler);
 
   return (
     <div className='flex justify-around'>
@@ -63,7 +69,8 @@ export const FollowHandler: React.FC<FollowHandleTriggerProps> = ({ handler, rec
             otherUserId: otherUserId
           })
         }
-        variant={handler === 'newFollow' || handler === 'newFollowRequest' ? 'primary' : 'delete'}
+        variant={buttonVariant}
+        className='h-2/3 py-[7px]' //ユーザーフォロー関連のボタンのみカスタム
       >
         {buttonText}
       </Button>
@@ -78,6 +85,7 @@ export const FollowHandler: React.FC<FollowHandleTriggerProps> = ({ handler, rec
             })
           }
           variant='approve'
+          className='h-2/3 py-[7px]'
         >
           承諾
         </Button>

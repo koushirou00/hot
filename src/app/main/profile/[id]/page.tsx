@@ -1,29 +1,23 @@
 // src/app/main/profile/[id]/page.tsx
 import React from 'react';
-import { User } from '@prisma/client';
 import { fetchUserProfile } from '@/functions/api/user/fetchUserProfile';
-import { fetchOtherUserProfile } from '@/functions/api/user/fetchOtherUserProfile';
-import { fetchFollow } from '@/functions/api/follow/fetchFollow';
 
 import { MyPage } from '@/app/main/profile/[id]/_components/MyPage';
-import { OtherPage } from './_components/OtherPage';
+import { OtherPage } from '@/app/main/profile/[id]/_components/OtherPage';
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const { loginUser } = await fetchUserProfile(); //auth tokenで承認
-  const loginUserId = loginUser.id;
-  // URLのuserIDが自分と同じでない場合に他者取得。
-  const result = loginUserId === params.id ? null : await fetchOtherUserProfile(params.id);
-  const otherUser: User = result?.otherUser;
-  const fetchUserId = otherUser ? otherUser.id : loginUserId;
-  const followArray = await fetchFollow(fetchUserId);
+  const { loginUser } = await fetchUserProfile(); //auth tokenで取得
+  // URLのuserIDが自分と同じでない場合に他者ページ表示。
+  const otherUserId = loginUser.id !== params.id && params.id;
 
   return (
     <>
       {/* 自分のプロフィール */}
-      {loginUserId === params.id ? (
-        <MyPage user={loginUser} followArray={followArray} />
+      {loginUser.id === params.id ? (
+        <MyPage user={loginUser} />
       ) : (
-        otherUser !== null && <OtherPage user={otherUser} followArray={followArray} loginUserId={loginUserId} />
+        //　他者プロフィール
+        otherUserId && <OtherPage loginUserId={loginUser.id} otherUserId={otherUserId} />
       )}
     </>
   );

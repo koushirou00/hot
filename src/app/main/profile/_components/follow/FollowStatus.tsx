@@ -6,7 +6,7 @@ import { fetchFollowEvents } from '@/functions/api/event/fetchFollowEvents';
 export const FollowStatus: React.FC<FollowArrayProps> = async ({ followArray, loginUserId, otherUserId }) => {
   const followersArray = followArray.followers;
   const followsArray = followArray.follows;
-  const { followEventsArray } = await fetchFollowEvents(loginUserId || otherUserId || '');
+  const { followEventArray } = await fetchFollowEvents(loginUserId || otherUserId || '');
 
   return (
     <div className='mt-4 flex items-center justify-around text-center'>
@@ -27,8 +27,8 @@ export const FollowStatus: React.FC<FollowArrayProps> = async ({ followArray, lo
       </div>
       <div>|</div>
       <div>
-        <Link href={``}>
-          <p>{followEventsArray.length}</p>
+        <Link href={`/main/profile/${loginUserId || otherUserId}/event-detail`}>
+          <p>{followEventArray.length}</p>
           <p>イベント</p>
         </Link>
       </div>

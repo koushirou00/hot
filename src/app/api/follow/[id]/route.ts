@@ -24,8 +24,10 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     ]);
 
     return NextResponse.json({
-      follows: follows,
-      followers: followers,
+      followArray: {
+        follows: follows,
+        followers: followers
+      },
       status: 200
     });
   } catch (error) {

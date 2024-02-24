@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabaseServer';
 import { NextRequest, NextResponse } from 'next/server';
 
+//イベント取得
 export async function GET({ params }: { params: { id: string } }) {
   try {
     const eventId = params.id;

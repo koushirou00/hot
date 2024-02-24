@@ -1,8 +1,8 @@
 // src/app/main/profile/[id]/_components/OtherPage.tsx
 import React from 'react';
-import { Event, User } from '@prisma/client';
-import { FollowData } from '@/types/follow';
 
+import { fetchUserProfile } from '@/functions/api/user/fetchUserProfile';
+import { fetchFollow } from '@/functions/api/follow/fetchFollow';
 import { formatOtherFollowData } from '@/app/main/profile/_components/follow/functions/formatOtherFollowData';
 import { FollowHandler } from '@/app/main/profile/_components/follow/FollowHandler/FollowHandler';
 
@@ -13,12 +13,14 @@ import { OtherSns } from '@/app/main/_components/icons/OtherSns';
 import { FollowStatus } from '@/app/main/profile/_components/follow/FollowStatus';
 
 type OtherPageProps = {
-  user: User;
-  followArray: FollowData;
   loginUserId: string;
+  otherUserId: string;
 };
 
-export const OtherPage: React.FC<OtherPageProps> = ({ user, followArray, loginUserId }) => {
+export const OtherPage: React.FC<OtherPageProps> = async ({ loginUserId, otherUserId }) => {
+  const { user } = await fetchUserProfile(otherUserId);
+  const { followArray } = await fetchFollow(otherUserId);
+
   const { getFollowRecord, getFollowerRecord, isPendingFollow, isFollow, isPendingFollower, isFollower } = formatOtherFollowData({
     followArray,
     loginUserId

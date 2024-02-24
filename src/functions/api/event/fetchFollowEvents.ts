@@ -1,11 +1,11 @@
+import { serverHeaderOption } from '../utils/serverHeaderOption';
+
 // src/functions/api/event/fetchFollowEvents.ts
-export async function fetchFollowEvents(userId?: string, cache: RequestCache = 'no-store') {
+export async function fetchFollowEvents(otherUserId?: string, cache: RequestCache = 'no-store') {
   try {
-    const fetchUrl = `${process.env.URL}/api/user/eventFollow/${userId ? userId : ''}`;
+    const fetchUrl = `${process.env.URL}/api/event/follow/${otherUserId ? otherUserId : ''}`;
     const response = await fetch(fetchUrl, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: await serverHeaderOption({ otherUser: Boolean(otherUserId) }),
       cache: cache
     });
     if (!response.ok) throw new Error(`フォロー取得に失敗しました: ${response.statusText}`);

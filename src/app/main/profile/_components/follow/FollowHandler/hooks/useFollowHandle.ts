@@ -19,7 +19,6 @@ export const useFollowHandle = () => {
 
   // フォロー許可 or 削除
   const handleDialog = async (confirm: boolean) => {
-    console.log(showDialog);
     if (!confirm || !showDialog) return setShowDialog(null);
 
     if (showDialog.action === 'newFollow' && showDialog.otherUserId) {
