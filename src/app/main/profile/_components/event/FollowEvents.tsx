@@ -2,16 +2,7 @@
 import React from 'react';
 import { FollowEventsProps } from '@/types/event';
 import { EventFollowHandler } from './EventFollowHandler/EventFollowHandler';
-
-function formatDate(dateStr: Date) {
-  const date = new Date(dateStr);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
-  const dayOfWeek = dayNames[date.getDay()]; // getDay() で曜日インデックスを取得し、日本語の曜日に変換
-  return `${year}年${month.toString().padStart(2, '0')}月${day.toString().padStart(2, '0')}日（${dayOfWeek}）`;
-}
+import { formatEventDate } from '@/functions/dataFormat/formatEventDate';
 
 export const FollowEvents: React.FC<FollowEventsProps> = ({ myFollowEventArray, otherFollowEventArray }) => {
   const otherUserPage = otherFollowEventArray !== null;
@@ -38,7 +29,7 @@ export const FollowEvents: React.FC<FollowEventsProps> = ({ myFollowEventArray, 
                 <p>
                   都道府県：<span>{record.event.prefecture.name}</span>
                 </p>
-                <p>開催日&emsp;：{formatDate(record.event.eventDate)}</p>
+                <p>開催日&emsp;：{formatEventDate({ dateStr: record.event.eventDate, format: 'inWeek' })}</p>
               </div>
               {otherUserPage && isMyFollowEvent(record.eventId) ? (
                 <EventFollowHandler handler={'followDelete'} />

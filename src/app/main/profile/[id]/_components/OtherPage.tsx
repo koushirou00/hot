@@ -65,11 +65,9 @@ export const OtherPage: React.FC<OtherPageProps> = async ({ loginUserId, otherUs
           ) : (
             isFollower && <FollowHandler handler='followerDelete' recordId={getFollowerRecord?.id} />
           )}
-
-          <div className='mt-7'>
-            <OtherSns xLink={user.x} instagramLink={user.instagram} />
-          </div>
-          <FollowStatus followArray={followArray} otherUserId={user.id} />
+        </div>
+        <div className='mt-7'>
+          <OtherSns xLink={user.x} instagramLink={user.instagram} />
         </div>
       </div>
     </>

@@ -10,7 +10,5 @@ export type ExtendFollow = Follow & {
 };
 
 export type FollowArrayProps = {
-  loginUserId?: string;
-  otherUserId?: string;
   followArray: FollowData;
 };

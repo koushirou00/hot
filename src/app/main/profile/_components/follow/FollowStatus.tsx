@@ -1,33 +1,35 @@
 import React from 'react';
 import Link from 'next/link';
 import { FollowArrayProps } from '@/types/follow';
-import { fetchFollowEvents } from '@/functions/api/event/fetchFollowEvents';
+import { EventWithPrefecture } from '@/types/event';
 
-export const FollowStatus: React.FC<FollowArrayProps> = async ({ followArray, loginUserId, otherUserId }) => {
+type FollowStatusProps = FollowArrayProps & {
+  followEventArray: EventWithPrefecture[];
+  userId: string;
+};
+
+export const FollowStatus: React.FC<FollowStatusProps> = async ({ followArray, followEventArray, userId }) => {
   const followersArray = followArray.followers;
   const followsArray = followArray.follows;
-  const { followEventArray } = await fetchFollowEvents(loginUserId || otherUserId || '');
 
   return (
     <div className='mt-4 flex items-center justify-around text-center'>
       <div>
-        <Link href={`/main/profile/${loginUserId || otherUserId}/follow-detail?tab=follows&user=${loginUserId ? 'my' : 'other'}`}>
+        <Link href={`/main/profile/${userId}/follow-detail?tab=follows`}>
           <p>{followsArray.length}</p>
           <p>フォロー</p>
         </Link>
       </div>
       <div>|</div>
       <div>
-        <Link
-          href={`/main/profile/${loginUserId || otherUserId}/follow-detail?tab=followers&user=${loginUserId ? 'my' : 'other'}`}
-        >
+        <Link href={`/main/profile/${userId}/follow-detail?tab=followers`}>
           <p>{followersArray.length}</p>
           <p>フォロワー</p>
         </Link>
       </div>
       <div>|</div>
       <div>
-        <Link href={`/main/profile/${loginUserId || otherUserId}/event-detail`}>
+        <Link href={`/main/profile/${userId}/event-detail`}>
           <p>{followEventArray.length}</p>
           <p>イベント</p>
         </Link>

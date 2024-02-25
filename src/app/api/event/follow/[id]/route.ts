@@ -27,7 +27,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       ※ bの方が現在日に近い場合のみbを前に持ってくる。
     */
     // 例）a = 2022/04/01,  b = 2022/03/01 の場合、 a - b = 正数のためaがbの後ろへ行く。
-    events.sort((a, b) => a.event.eventDate.getTime() - b.event.eventDate.getTime());
+    events.sort((a, b) => new Date(a.event.eventDate).getTime() - new Date(b.event.eventDate).getTime());
     return NextResponse.json({ followEventArray: events, status: 200 });
   } catch (error) {
     return NextResponse.json(error);

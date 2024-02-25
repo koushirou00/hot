@@ -2,16 +2,13 @@
 import React, { Suspense } from 'react';
 import { UserProps } from '@/types/UserProps';
 
-import { fetchFollow } from '@/functions/api/follow/fetchFollow';
 import { ContentsHeader } from '@/app/main/_components/ContentsHeader';
-import { FollowStatus } from '@/app/main/profile/_components/follow/FollowStatus';
 import { Loading } from '@/components/layouts/Loading';
 import { UserIcon } from '@/app/main/_components/icons/UserIcon';
 import { LockIcon } from '@/app/main/_components/icons/LockIcon';
 import { OtherSns } from '@/app/main/_components/icons/OtherSns';
 
 export const MyPage: React.FC<UserProps> = async ({ user }) => {
-  const { followArray } = await fetchFollow(user.id);
   return (
     <>
       <ContentsHeader text='プロフィール' />
@@ -37,16 +34,7 @@ export const MyPage: React.FC<UserProps> = async ({ user }) => {
             </div>
           </div>
         </div>
-        <FollowStatus loginUserId={user.id} followArray={followArray} />
       </Suspense>
-      <div className='mt-7 flex items-center justify-center'>
-        <a
-          href={`${process.env.URL}/main/profile/edit`}
-          className='rounded-md bg-customeOrange px-5 py-[6px] text-center text-white'
-        >
-          編集する
-        </a>
-      </div>
     </>
   );
 };

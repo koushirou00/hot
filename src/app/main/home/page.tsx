@@ -2,7 +2,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { Posts } from '@/app/main/home/_components/Posts';
+import { Posts } from '@/app/main/home/_components/posts/Posts';
 import { Header } from '@/app/main/_components/Header';
 
 export default function Page() {

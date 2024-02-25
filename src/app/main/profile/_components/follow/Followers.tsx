@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { FollowArrayProps } from '@/types/follow';
 
 import { formatMyFollowData } from '@/app/main/profile/_components/follow/functions/formatMyFollowData';
@@ -9,10 +9,13 @@ import { FollowHandler } from '@/app/main/profile/_components/follow/FollowHandl
 
 import { UserIcon } from '@/app/main/_components/icons/UserIcon';
 import { LockIcon } from '@/app/main/_components/icons/LockIcon';
+import { useUserId } from '@/hooks/useUserId';
 
+// loginUser = 自分のプロフィールの場合のみtrue
 export const Followers: React.FC<FollowArrayProps> = ({ followArray }) => {
-  const searchParams = useSearchParams();
-  const loginUser = searchParams.get('user') === 'my';
+  const params = useParams();
+  const myUserId = useUserId();
+  const loginUser = params.id === myUserId;
 
   const { isFollow, sortedFollowersArray } = formatMyFollowData({ followArray });
 

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { FollowArrayProps } from '@/types/follow';
 
 import { formatMyFollowData } from '@/app/main/profile/_components/follow/functions/formatMyFollowData';
@@ -9,14 +9,16 @@ import { FollowHandler } from '@/app/main/profile/_components/follow/FollowHandl
 
 import { UserIcon } from '@/app/main/_components/icons/UserIcon';
 import { LockIcon } from '@/app/main/_components/icons/LockIcon';
+import { useUserId } from '@/hooks/useUserId';
 
-// otherPage = 他者プロフィールの場合のみtrue(値は自身のuserId)
+// loginUser = 自分のプロフィールの場合のみtrue
 export const Follows: React.FC<FollowArrayProps> = ({ followArray }) => {
   const { sortedFollowsArray, isFollower } = formatMyFollowData({ followArray });
 
   // パラメータを取得
-  const searchParams = useSearchParams();
-  const loginUser = searchParams.get('user') === 'my';
+  const params = useParams();
+  const myUserId = useUserId();
+  const loginUser = params.id === myUserId;
 
   return (
     <div>
