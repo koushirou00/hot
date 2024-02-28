@@ -115,13 +115,13 @@ model Post {
   category       String?
   userId         String           @map("user_id") @db.Uuid
   eventId        String           @map("event_id") @db.Uuid
+  comment        Comment[]
   like           Like[]
   bad            Bad[]
   retweet        Retweet[]
   commentlike    CommentLike[]
   commentbad     CommentBad[]
   commentretweet CommentRetweet[]
-  comment        Comment[]
   user           User             @relation(fields: [userId], references: [id])
   event          Event            @relation(fields: [eventId], references: [id])
 

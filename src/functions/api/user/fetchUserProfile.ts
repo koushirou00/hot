@@ -1,12 +1,12 @@
 // src/functions/api/user/fetchUserProfile.ts
 import { serverHeaderOption } from '@/functions/api/utils/serverHeaderOption';
 
-export async function fetchUserProfile(otherUserId?: string, isCache: RequestCache = 'no-cache') {
+export async function fetchUserProfile(otherUserId?: string, isCache: RequestCache = 'no-store') {
   try {
     const fetchUrl = `${process.env.URL}/api/user/${otherUserId ? otherUserId : ''}`;
     const response = await fetch(fetchUrl, {
       method: 'GET',
-      headers: await serverHeaderOption({ otherUser: Boolean(otherUserId) }),
+      headers: await serverHeaderOption(),
       cache: isCache
     });
 

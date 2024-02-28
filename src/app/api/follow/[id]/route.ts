@@ -13,12 +13,18 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         where: { userId: OtherUserId },
         include: {
           followingUser: true //followingUserはスキーマで定義したrelation名
+        },
+        orderBy: {
+          status: 'desc' // pendingが上に来るようにする。（'desc' は降順 ）
         }
       }),
       prisma.follow.findMany({
         where: { followingId: OtherUserId },
         include: {
           user: true
+        },
+        orderBy: {
+          status: 'desc' // pendingが上に来るようにする。（'desc' は降順 ）
         }
       })
     ]);

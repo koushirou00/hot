@@ -10,7 +10,8 @@ const config: Config = {
       },
       colors: {
         customeOrange: '#E65738',
-        customeBlue: '#2c81d2'
+        customeBlue: '#2c81d2',
+        customeGray: '#9C9C9C'
       }
     }
   },

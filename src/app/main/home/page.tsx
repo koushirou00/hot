@@ -21,7 +21,7 @@ export default function Page() {
       <Link className='text-blue-300' href='/main/profile' target='_blank'>
         http://localhost:3000/main/profile（プロフィールページ）
       </Link>
-      <Posts />
+      {/* <Posts /> */}
     </div>
   );
 }

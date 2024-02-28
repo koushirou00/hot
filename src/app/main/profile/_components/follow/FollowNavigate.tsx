@@ -1,3 +1,4 @@
+// src/app/main/profile/_components/follow/FollowNavigate.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -5,9 +6,9 @@ import { FollowArrayProps } from '@/types/follow';
 import { Follows } from '@/app/main/profile/_components/follow/Follows';
 import { Followers } from '@/app/main/profile/_components/follow/Followers';
 import { Loading } from '@/components/layouts/Loading';
+import { formatMyFollow } from './functions/formatMyFollow';
 
-// other = 他者プロフィールの場合: true
-export const FollowNavigate: React.FC<FollowArrayProps> = ({ followArray }) => {
+export const FollowNavigate: React.FC<FollowArrayProps> = ({ myFollowArray, otherFollowArray }) => {
   const searchParams = useSearchParams();
   const [show, setShow] = useState<string>('');
 
@@ -19,6 +20,10 @@ export const FollowNavigate: React.FC<FollowArrayProps> = ({ followArray }) => {
 
   if (!show) return <Loading />;
 
+  const isLoginUserPage = otherFollowArray === null; // 自分のプロフィールの場合のみtrue
+  const { myFollowsUserIdList, myFollowersUserIdList } = formatMyFollow({ myFollowArray });
+  const displayFollowArray = otherFollowArray || myFollowArray;
+
   return (
     <div>
       <div className='mt-5'>
@@ -29,7 +34,7 @@ export const FollowNavigate: React.FC<FollowArrayProps> = ({ followArray }) => {
           `}
             onClick={() => setShow('follows')}
           >
-            {`フォロー（${followArray.follows.length}）`}
+            {`フォロー（${displayFollowArray.follows.length}）`}
           </div>
           <div
             className={`
@@ -37,10 +42,32 @@ export const FollowNavigate: React.FC<FollowArrayProps> = ({ followArray }) => {
             `}
             onClick={() => setShow('followers')}
           >
-            {`フォロワー（${followArray.followers.length}）`}
+            {`フォロワー（${displayFollowArray.followers.length}）`}
           </div>
         </div>
-        {show === 'follows' ? <Follows followArray={followArray} /> : <Followers followArray={followArray} />}
+        {show === 'follows' ? (
+          displayFollowArray.follows.some((record) => record.status === 'approved') ||
+          (isLoginUserPage && displayFollowArray.follows.some((record) => record.status === 'pending')) ? (
+            <Follows
+              followList={displayFollowArray.follows}
+              myFollowersUserIdList={myFollowersUserIdList}
+              isLoginUserPage={isLoginUserPage}
+              myFollowsUserIdList={myFollowsUserIdList}
+            />
+          ) : (
+            <div>フォローは0人です。</div>
+          )
+        ) : displayFollowArray.followers.some((record) => record.status === 'approved') ||
+          (isLoginUserPage && displayFollowArray.follows.some((record) => record.status === 'pending')) ? (
+          <Followers
+            followList={displayFollowArray.followers}
+            myFollowsUserIdList={myFollowsUserIdList}
+            isLoginUserPage={isLoginUserPage}
+            myFollowersUserIdList={myFollowersUserIdList}
+          />
+        ) : (
+          <div>フォロワーは0人です。</div>
+        )}
       </div>
     </div>
   );

@@ -13,19 +13,27 @@ export async function GET(request: NextRequest) {
         where: { userId: user.user.id },
         include: {
           followingUser: true //followingUserはスキーマで定義したrelation名
+        },
+        orderBy: {
+          status: 'desc' // pendingが上に来るようにする。（'desc' は降順 ）
         }
       }),
       prisma.follow.findMany({
         where: { followingId: user.user.id },
         include: {
           user: true
+        },
+        orderBy: {
+          status: 'desc' // pendingが上に来るようにする。（'desc' は降順 ）
         }
       })
     ]);
 
     return NextResponse.json({
-      follows: follows,
-      followers: followers,
+      followArray: {
+        follows: follows,
+        followers: followers
+      },
       status: 200
     });
   } catch (error) {

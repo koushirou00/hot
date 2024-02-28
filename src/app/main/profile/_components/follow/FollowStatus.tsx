@@ -1,9 +1,11 @@
+// src/app/main/profile/_components/follow/FollowStatus.tsx
 import React from 'react';
 import Link from 'next/link';
-import { FollowArrayProps } from '@/types/follow';
+import { FollowData } from '@/types/follow';
 import { EventWithPrefecture } from '@/types/event';
 
-type FollowStatusProps = FollowArrayProps & {
+type FollowStatusProps = {
+  followArray: FollowData;
   followEventArray: EventWithPrefecture[];
   userId: string;
 };

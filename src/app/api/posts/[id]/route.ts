@@ -1,15 +1,21 @@
+// src/app/api/posts/[id]/route.ts
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 // つぶやき一覧取得
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const userId = params.id;
 
     const posts = await prisma.post.findMany({
-      where: { id: userId },
+      where: { userId: userId },
       include: {
-        user: true
+        user: true,
+        event: true,
+        comment: true,
+        like: true,
+        retweet: true,
+        bad: true
       }
     });
 

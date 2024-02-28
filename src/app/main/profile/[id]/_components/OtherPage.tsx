@@ -10,7 +10,6 @@ import { PageBackHeader } from '@/app/main/_components/PageBackHeader';
 import { UserIcon } from '@/app/main/_components/icons/UserIcon';
 import { LockIcon } from '@/app/main/_components/icons/LockIcon';
 import { OtherSns } from '@/app/main/_components/icons/OtherSns';
-import { FollowStatus } from '@/app/main/profile/_components/follow/FollowStatus';
 
 type OtherPageProps = {
   loginUserId: string;
