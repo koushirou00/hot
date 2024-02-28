@@ -72,13 +72,13 @@ export const BadIcon: React.FC<IconProps> = ({ myMark }) => {
               d='M8.25 7.5C8.25 7.91421 7.91421 8.25 7.5 8.25C7.08579 8.25 6.75 7.91421 6.75 7.5C6.75 7.08579 7.08579 6.75 7.5 6.75C7.91421 6.75 8.25 7.08579 8.25 7.5Z'
               fill='white'
               stroke='white'
-              stroke-width='1.5'
+              strokeWidth='1.5'
             />
             <path
               d='M15.25 7.5C15.25 7.91421 14.9142 8.25 14.5 8.25C14.0858 8.25 13.75 7.91421 13.75 7.5C13.75 7.08579 14.0858 6.75 14.5 6.75C14.9142 6.75 15.25 7.08579 15.25 7.5Z'
               fill='white'
               stroke='white'
-              stroke-width='1.5'
+              strokeWidth='1.5'
             />
           </g>
           <defs>
