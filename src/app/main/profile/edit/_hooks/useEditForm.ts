@@ -1,12 +1,13 @@
+// src/app/main/profile/edit/_hooks/useEditForm.ts
+import { User } from '@prisma/client';
 import { UserEditData } from '@/types/userEditData';
+import { useRouter } from 'next/navigation';
+import { clientApi } from '@/functions/api/clientApi';
+import { toastPromise } from '@/utils/toastify/toast';
+import { imageUploader } from '@/utils/supabase/imageUpload';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { User } from '@prisma/client';
-import { patchUserData } from '@/functions/api/user/patchUser';
-import { toastPromise } from '@/utils/toastify/toast';
-import { useRouter } from 'next/navigation';
-import { imageUploader } from '@/utils/supabase/imageUpload';
 
 const schema = z.object({
   name: z.string().min(1, 'お名前は必須です。').max(30, 'お名前は30文字以内で入力してください。'),
@@ -49,7 +50,7 @@ export const useEditForm = (user: User) => {
   });
 
   const router = useRouter();
-
+  const api = clientApi();
   const onSubmit = async (data: UserEditData) => {
     try {
       const addIconFile = getValues(); // 全データ再取得
@@ -61,7 +62,7 @@ export const useEditForm = (user: User) => {
         data.iconUrl = await imageUploader(data.iconFile, filePath);
       }
 
-      await toastPromise<Response>(patchUserData(data));
+      await toastPromise<Response>(api.patchUser(data));
       router.push('/main/profile');
     } catch (error) {
       console.error('フォームの送信に失敗しました。', error);

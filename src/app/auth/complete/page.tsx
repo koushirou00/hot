@@ -2,10 +2,11 @@
 import { Loading } from '@/components/layouts/Loading';
 import React from 'react';
 import Link from 'next/link';
-import { postUser } from '@/functions/api/user/postUser';
+import { serverApi } from '@/functions/api/serverApi';
 
 export default async function Page() {
-  const result = await postUser();
+  const api = serverApi();
+  const result = await api.postUser();
   if (result == null) return <Loading />;
 
   return result.status === 403 ? (

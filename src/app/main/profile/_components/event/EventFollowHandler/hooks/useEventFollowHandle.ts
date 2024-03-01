@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toastPromise } from '@/utils/toastify/toast';
-import { deleteFollowEvent } from '@/functions/api/event/deleteFollowEvent';
-import { newFollowEvent } from '@/functions/api/event/newFollowEvent';
+import { clientApi } from '@/functions/api/clientApi';
 
 export const useEventFollowHandle = () => {
+  const api = clientApi();
   const router = useRouter();
 
   const [showDialog, setShowDialog] = useState<{
@@ -20,10 +20,10 @@ export const useEventFollowHandle = () => {
     if (!confirm || !showDialog) return setShowDialog(null);
 
     if (showDialog.action === 'newFollow' && showDialog.eventId) {
-      await toastPromise<Response>(newFollowEvent(showDialog.eventId));
+      await toastPromise<Response>(api.postFollowEvent(showDialog.eventId));
       router.refresh();
     } else if (showDialog.action === 'delete' && showDialog.recordId) {
-      await toastPromise<Response>(deleteFollowEvent(showDialog.recordId));
+      await toastPromise<Response>(api.deleteFollowEvent(showDialog.recordId));
       router.refresh();
     }
     setShowDialog(null);

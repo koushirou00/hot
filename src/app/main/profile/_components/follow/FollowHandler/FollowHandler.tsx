@@ -25,7 +25,7 @@ const buttonSetting = (handler: string) => {
     case 'followerDelete':
       dialogText = `フォロワーから削除しますか？\n※削除したことは相手ユーザーへ通知されません`;
       buttonText = 'このフォロワーを削除';
-      buttonVariant = '';
+      buttonVariant = 'delete';
       break;
     case 'newFollow':
       dialogText = `フォローしますか`;

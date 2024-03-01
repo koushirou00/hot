@@ -1,6 +1,6 @@
 import React from 'react';
 import { PostArray } from '@/types/posts';
-import { SinglePost } from './SinglePost';
+import { SinglePost } from './SinglePost/SinglePost';
 
 type PostsProps = {
   postArray: PostArray;

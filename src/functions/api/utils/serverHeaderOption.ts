@@ -2,7 +2,7 @@
 import { getAuthToken } from '@/utils/supabase/getAuthToken';
 
 type args = {
-  otherUser?: boolean;
+  authorization?: boolean;
 };
 type HeaderOption = {
   'Content-Type': 'application/json';
@@ -10,11 +10,11 @@ type HeaderOption = {
 };
 
 // サーバーコンポーネントからの呼び出し
-export const serverHeaderOption = async ({ otherUser = false }: args = {}): Promise<HeaderOption> => {
+export const serverHeaderOption = async ({ authorization = false }: args = {}): Promise<HeaderOption> => {
   const defaultHeader: HeaderOption = {
     'Content-Type': 'application/json'
   };
-  if (otherUser) return defaultHeader;
+  if (!authorization) return defaultHeader;
 
   /* --- ログインユーザーのみ Authrization追加 --- */
   const token = await getAuthToken();

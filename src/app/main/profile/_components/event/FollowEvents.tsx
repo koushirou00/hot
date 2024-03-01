@@ -5,12 +5,11 @@ import { EventFollowHandler } from './EventFollowHandler/EventFollowHandler';
 import { formatEventDate } from '@/functions/dataFormat/formatEventDate';
 
 export const FollowEvents: React.FC<FollowEventsProps> = ({ myFollowEventArray, otherFollowEventArray }) => {
-  const otherUserPage = otherFollowEventArray !== null;
+  const loginUserPage = otherFollowEventArray === null;
   const displayFollowEvents = otherFollowEventArray || myFollowEventArray;
 
   // 他者プロフィールの場合のみ使用
-  const isMyFollowEvent = (otherUserFollowEventId: string) =>
-    myFollowEventArray.some((record) => record.eventId === otherUserFollowEventId);
+  const isMyFollowEvent = (otherUserFollowEventId: string) => myFollowEventArray.some((record) => record.eventId === otherUserFollowEventId);
 
   return (
     <div>
@@ -31,7 +30,7 @@ export const FollowEvents: React.FC<FollowEventsProps> = ({ myFollowEventArray, 
                 </p>
                 <p>開催日&emsp;：{formatEventDate({ dateStr: record.event.eventDate, format: 'inWeek' })}</p>
               </div>
-              {otherUserPage && isMyFollowEvent(record.eventId) ? (
+              {loginUserPage || (!loginUserPage && isMyFollowEvent(record.eventId)) ? (
                 <EventFollowHandler handler={'followDelete'} />
               ) : (
                 <EventFollowHandler handler={'newFollow'} />

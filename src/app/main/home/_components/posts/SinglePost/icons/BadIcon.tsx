@@ -46,8 +46,8 @@ export const BadIcon: React.FC<IconProps> = ({ myMark }) => {
         </svg>
       ) : (
         <svg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
-          <g clip-path='url(#clip0_201_664)'>
-            <circle cx='11' cy='11' r='10' fill='#322C40' fill-opacity='0.84' />
+          <g clipPath='url(#clip0_201_664)'>
+            <circle cx='11' cy='11' r='10' fill='#322C40' fillOpacity='0.84' />
             <mask id='path-2-inside-1_201_664' fill='white'>
               <path d='M11 21.175C5.3894 21.175 0.824951 16.6105 0.824951 11C0.824951 5.38945 5.3894 0.824997 11 0.824997C16.6105 0.824997 21.1749 5.38945 21.1749 11C21.1749 16.6105 16.6105 21.175 11 21.175ZM11 1.375C5.693 1.375 1.37495 5.69305 1.37495 11C1.37495 16.3069 5.693 20.625 11 20.625C16.3069 20.625 20.6249 16.3069 20.6249 11C20.6249 5.69305 16.3069 1.375 11 1.375Z' />
             </mask>

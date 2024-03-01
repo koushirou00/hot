@@ -5,12 +5,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const OtherUserId = params.id;
-    if (!OtherUserId) return NextResponse.json({ error: 'userIdを取得できませんでした', status: 401 });
-
+    const userId = params.id;
+    if (!userId) return NextResponse.json({ error: 'userIdを取得できませんでした', status: 401 });
     const [follows, followers] = await Promise.all([
       prisma.follow.findMany({
-        where: { userId: OtherUserId },
+        where: { userId: userId },
         include: {
           followingUser: true //followingUserはスキーマで定義したrelation名
         },
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         }
       }),
       prisma.follow.findMany({
-        where: { followingId: OtherUserId },
+        where: { followingId: userId },
         include: {
           user: true
         },
@@ -47,6 +46,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     if (!user || error) return NextResponse.json({ error: 'トークン認証失敗', status: 401 });
 
     const recordId = params.id;
+
     await prisma.follow.delete({
       where: {
         id: recordId

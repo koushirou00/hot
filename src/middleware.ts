@@ -28,9 +28,14 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(REDIRECT_PATHS.authenticated, req.url));
   }
 
-  // if (token && path.includes(`profile/${session.user.id}`)) {
-  //   return NextResponse.redirect(new URL(REDIRECT_PATHS.myProfile, req.url));
-  // }
+  // プロフィールページのURLのuserIdがログインユーザーと同じ場合リダイレクト
+  if (token && path.includes(`profile/${session.user.id}`)) {
+    const segments = path.split('/').filter(Boolean);
+    if (segments.length === 3 && segments[2] === session.user.id) {
+      return NextResponse.redirect(new URL(REDIRECT_PATHS.myProfile, req.url));
+    }
+  }
+
   return res;
 }
 

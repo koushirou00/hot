@@ -1,12 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { newFollow } from '@/functions/api/follow/newFollow';
-import { approveFollow } from '@/functions/api/follow/approveFollow';
-import { deleteFollow } from '@/functions/api/follow/deleteFollow';
 import { toastPromise } from '@/utils/toastify/toast';
+import { clientApi } from '@/functions/api/clientApi';
 
 export const useFollowHandle = () => {
+  const api = clientApi();
   const router = useRouter();
 
   const [showDialog, setShowDialog] = useState<{
@@ -19,19 +18,19 @@ export const useFollowHandle = () => {
 
   // フォロー許可 or 削除
   const handleDialog = async (confirm: boolean) => {
+    console.log(showDialog);
     if (!confirm || !showDialog) return setShowDialog(null);
-
     if (showDialog.action === 'newFollow' && showDialog.otherUserId) {
-      await toastPromise<Response>(newFollow(showDialog.otherUserId));
+      await toastPromise<Response>(api.postFollow(showDialog.otherUserId));
       router.refresh();
     } else if (showDialog.action === 'newFollowRequest' && showDialog.otherUserId) {
-      await toastPromise<Response>(newFollow(showDialog.otherUserId, true)); //鍵アカウント判定用真偽値
+      await toastPromise<Response>(api.postLockFollow(showDialog.otherUserId)); //鍵アカウントユーザーのフォロー
       router.refresh();
     } else if (showDialog.action === 'approve' && showDialog.recordId) {
-      await toastPromise<Response>(approveFollow(showDialog.recordId));
+      await toastPromise<Response>(api.approveFollow(showDialog.recordId));
       router.refresh();
     } else if (showDialog.recordId) {
-      await toastPromise<Response>(deleteFollow(showDialog.recordId));
+      await toastPromise<Response>(api.deleteFollow(showDialog.recordId));
       router.refresh();
     }
     setShowDialog(null);
