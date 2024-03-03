@@ -5,9 +5,19 @@ export type ExtendFollow = Follow & {
   followingUser: User;
 };
 
+export type FollowData = {
+  follows: ExtendFollow[];
+  followers: ExtendFollow[];
+};
+
 export type FollowArrayProps = {
-  followArray: {
-    follows: ExtendFollow[];
-    followers: ExtendFollow[];
-  };
+  myFollowArray: FollowData;
+  otherFollowArray?: FollowData;
+};
+
+export type followListProps = {
+  followList: ExtendFollow[];
+  myFollowsUserIdList: Set<string>;
+  myFollowersUserIdList: Set<string>;
+  isLoginUserPage: boolean;
 };

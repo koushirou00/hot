@@ -8,7 +8,7 @@ import { Label } from '@/components/elements/Label';
 import { Input } from '@/components/elements/Input';
 import { Textarea } from '@/components/elements/Textarea';
 import { ImageSelecter } from './ImageSelecter';
-import { LockIcon } from '@/app/main/_components/icons/lock';
+import { LockIcon } from '@/app/main/_components/icons/LockIcon';
 
 export const Contents: React.FC<UserProps> = (userData) => {
   const user = userData.user;

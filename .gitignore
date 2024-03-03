@@ -3,7 +3,6 @@
 # 一時的なコミット除外
 /src/app/usage
 /src/app/main/search
-/src/app/api/events
 
 
 # dependencies
@@ -44,3 +43,6 @@ next-env.d.ts
 
 # prisma
 /prisma/migrations
+
+# bun
+bun.lockb

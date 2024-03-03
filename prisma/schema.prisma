@@ -16,7 +16,7 @@ model Event {
   id           String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   createdAt    DateTime        @default(now()) @map("created_at")
   updatedAt    DateTime        @updatedAt @map("updated_at")
-  eventDate    DateTime        @map("event_date")
+  eventDate    String          @map("event_date")
   name         String          @unique
   venue        String
   prefectureId Int             @map("prefecture_id")
@@ -115,13 +115,13 @@ model Post {
   category       String?
   userId         String           @map("user_id") @db.Uuid
   eventId        String           @map("event_id") @db.Uuid
+  comment        Comment[]
   like           Like[]
   bad            Bad[]
   retweet        Retweet[]
   commentlike    CommentLike[]
   commentbad     CommentBad[]
   commentretweet CommentRetweet[]
-  comment        Comment[]
   user           User             @relation(fields: [userId], references: [id])
   event          Event            @relation(fields: [eventId], references: [id])
 
@@ -195,7 +195,8 @@ model CommentLike {
 
 model CommentBad {
   id     String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  date   DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
   postId String   @map("post_id") @db.Uuid
   userId String   @map("user_id") @db.Uuid
   post   Post     @relation(fields: [postId], references: [id])

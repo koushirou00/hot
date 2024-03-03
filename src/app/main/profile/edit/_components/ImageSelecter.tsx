@@ -4,7 +4,7 @@ import { UserEditData } from '@/types/userEditData';
 
 import { Input } from '@/components/elements/Input';
 import { Label } from '@/components/elements/Label';
-import { UserIcon } from '@/app/main/_components/UserIcon';
+import { UserIcon } from '@/app/main/_components/icons/UserIcon';
 import { toastPromise } from '@/utils/toastify/toast';
 
 type ImageSelecterProps = {
@@ -21,8 +21,7 @@ const heicToWebp = async (file: File) => {
 
 export const ImageSelecter: React.FC<ImageSelecterProps> = ({ icon, setValue }) => {
   const fileInputRef = useRef<HTMLInputElement>(null); // ファイル入力を察知
-
-  // 画像プレビューURLの状態を追加
+  // 画像プレビューURLの状態
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // ファイル選択時：画像プレビューを生成、保存用のfileを設定
@@ -30,7 +29,6 @@ export const ImageSelecter: React.FC<ImageSelecterProps> = ({ icon, setValue }) 
     const fileList = event.target.files;
     if (!fileList || fileList.length === 0) return;
     let file = fileList[0];
-
     //HEICは表示できないので変換
     if (file.type === 'image/heic')
       file = await toastPromise(heicToWebp(file), {
@@ -48,7 +46,7 @@ export const ImageSelecter: React.FC<ImageSelecterProps> = ({ icon, setValue }) 
       <Label htmlFor='file' className='flex cursor-pointer'>
         <Input id='file' type='file' onChange={handleFileChange} ref={fileInputRef} className='hidden' />
         <div className='relative z-10 mx-auto h-[123px] w-[123px] rounded-full border-[5px] border-white'>
-          <UserIcon src={imagePreview || icon} alt='' />
+          <UserIcon src={imagePreview || icon} alt='' size='large' />
           {/* カメラアイコンをUserIconの右下に配置 */}
           <div className='absolute bottom-0 right-0 z-20 flex h-[40px] w-[40px] items-center justify-center rounded-full bg-blue-500/80'>
             <svg className='h-6 w-6 text-white' viewBox='0 0 31 31' fill='' xmlns='http://www.w3.org/2000/svg'>
