@@ -9,6 +9,7 @@ import { OtherSns } from '@/app/main/_components/icons/OtherSns';
 import { FollowStatus } from '@/app/main/profile/_components/follow/FollowStatus';
 import { Posts } from '@/app/main/home/_components/posts/Posts';
 import { serverApi } from '@/functions/api/serverApi';
+import { Button } from '@/components/elements/Button';
 
 export default async function Page() {
   const api = serverApi();
@@ -46,9 +47,9 @@ export default async function Page() {
         <FollowStatus followArray={followArray} followEventArray={followEventArray} userId={loginUser.id} />
 
         <div className='mt-7 flex items-center justify-center'>
-          <a href={`${process.env.URL}/main/profile/edit`} className='rounded-md bg-customeOrange px-5 py-[6px] text-center text-white'>
+          <Button color='primary' size='xxl' href={`${process.env.URL}/main/profile/edit`}>
             編集する
-          </a>
+          </Button>
         </div>
 
         <Posts postArray={posts} />

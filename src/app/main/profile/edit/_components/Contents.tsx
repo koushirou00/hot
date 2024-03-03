@@ -37,11 +37,7 @@ export const Contents: React.FC<UserProps> = (userData) => {
         <div>
           <Label htmlFor='introduction'>ひとこと</Label>
           <br />
-          <Textarea
-            id='introduction'
-            {...register('introduction')}
-            placeholder={`${user.introduction === '' && '入力してください'}`}
-          />
+          <Textarea id='introduction' {...register('introduction')} placeholder={`${user.introduction === '' && '入力してください'}`} />
           {errors.introduction && <p>{errors.introduction.message}</p>}
         </div>
         <div>
@@ -73,10 +69,10 @@ export const Contents: React.FC<UserProps> = (userData) => {
           </div>
         </div>
         <div className='flex justify-around pt-7'>
-          <Button type='button' onClick={() => router.replace('/main/profile')} variant='cancel' disabled={isSubmitting}>
+          <Button type='button' onClick={() => router.replace('/main/profile')} color='cancel' disabled={isSubmitting}>
             キャンセル
           </Button>
-          <Button type='submit' variant='primary' disabled={isSubmitting}>
+          <Button type='submit' color='primary' size='xl' disabled={isSubmitting}>
             保存する
           </Button>
         </div>

@@ -11,9 +11,9 @@ export const useFollowHandle = () => {
   const [showDialog, setShowDialog] = useState<{
     action: string;
     text: string;
+    subText?: string;
     recordId?: string;
     otherUserId?: string;
-    lock?: boolean;
   } | null>(null);
 
   // フォロー許可 or 削除

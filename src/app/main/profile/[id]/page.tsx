@@ -11,7 +11,6 @@ import { serverApi } from '@/functions/api/serverApi';
   ログインユーザーの場合：main/profile へ遷移
   ログインユーザーでない場合： このまま滞在
  */
-
 export default async function Page({ params }: { params: { id: string } }) {
   const api = serverApi();
   const otherUserId = params.id;

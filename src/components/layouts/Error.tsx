@@ -11,10 +11,10 @@ export const Error: React.FC = () => {
   };
 
   return (
-    <div className='p-4 text-white bg-red-600 flex flex-col items-center'>
+    <div className='flex flex-col items-center bg-red-600 p-4 text-white'>
       <h1 className='text-lg font-bold'>エラーが発生しました</h1>
       <p className='mb-4'>申し訳ございませんが、下のボタンよりホームページに戻るか、ページを更新してください。</p>
-      <button onClick={handleRefresh} className='px-4 py-2 bg-white text-black rounded'>
+      <button onClick={handleRefresh} color='primary'>
         ホームに戻る
       </button>
     </div>

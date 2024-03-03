@@ -3,37 +3,54 @@ import React from 'react';
 import { useEventFollowHandle } from './hooks/useEventFollowHandle';
 import { ConfirmDialog } from '@/components/layouts/ConfirmDialog';
 import { Button } from '@/components/elements/Button';
+import { ButtonProps } from '@/types/Button';
+
+type Handler = 'newFollow' | 'followDelete';
 
 type EventFollowHandleTriggerProps = {
-  handler: 'newFollow' | 'followDelete';
+  handler: Handler;
   eventId?: string;
   recordId?: string;
 };
 
 // テキスト設定用
-const buttonSetting = (handler: string) => {
-  let dialogText: string;
-  let buttonText: string;
-  switch (handler) {
-    case 'newFollow':
-      dialogText = `フォローしますか`;
-      buttonText = 'フォロー';
-      break;
-    case 'followDelete':
-      dialogText = 'フォローを解除しますか？';
-      buttonText = 'フォロー中';
-      break;
-    default:
-      dialogText = '';
-      buttonText = '';
-  }
-  return { dialogText, buttonText };
+const buttonSetting = (handler: Handler) => {
+  const settings: Record<
+    Handler,
+    {
+      dialogText: string;
+      buttonText: string;
+      buttonProps?: ButtonProps;
+    }
+  > = {
+    newFollow: {
+      dialogText: `フォローしますか`,
+      buttonText: 'フォロー'
+    },
+    followDelete: {
+      dialogText: 'フォローを解除しますか？',
+      buttonText: 'フォロー中',
+      buttonProps: { color: 'secondary' }
+    }
+  };
+
+  const handlerSetting = settings[handler];
+
+  // デフォルトの buttonProps
+  const defaultButtonProps: ButtonProps = { color: 'primary' };
+  // buttonProps が存在存在しない場合は defaultButtonProps を使用
+  const mergedButtonProps = { ...defaultButtonProps, ...handlerSetting.buttonProps };
+
+  return {
+    ...handlerSetting,
+    buttonProps: mergedButtonProps
+  };
 };
 
 export const EventFollowHandler: React.FC<EventFollowHandleTriggerProps> = ({ handler, eventId, recordId }) => {
   const { showDialog, setShowDialog, handleDialog } = useEventFollowHandle();
 
-  const { dialogText, buttonText } = buttonSetting(handler);
+  const { dialogText, buttonText, buttonProps } = buttonSetting(handler);
 
   return (
     <div className='flex justify-around'>
@@ -46,7 +63,7 @@ export const EventFollowHandler: React.FC<EventFollowHandleTriggerProps> = ({ ha
             eventId: eventId
           })
         }
-        variant={handler === 'newFollow' ? 'primary' : 'delete'}
+        {...buttonProps}
       >
         {buttonText}
       </Button>
