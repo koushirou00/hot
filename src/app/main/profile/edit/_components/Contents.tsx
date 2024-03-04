@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { UserProps } from '@/types/UserProps';
 import { useEditForm } from '@/app/main/profile/edit/_hooks/useEditForm';
 import { Button } from '@/components/elements/Button';
-import { Label } from '@/components/elements/Label';
 import { Input } from '@/components/elements/Input';
 import { Textarea } from '@/components/elements/Textarea';
 import { ImageSelecter } from './ImageSelecter';
 import { LockIcon } from '@/app/main/_components/icons/LockIcon';
+import { ToggleSwitch } from '@/components/elements/ToggleSwitch';
 
 export const Contents: React.FC<UserProps> = (userData) => {
   const user = userData.user;
@@ -29,25 +29,19 @@ export const Contents: React.FC<UserProps> = (userData) => {
       </div>
       <div className='px-6'>
         <div className='!-mt-3'>
-          <Label htmlFor='name'>お名前</Label>
-          <br />
-          <Input id='name' {...register('name')} type='text' className='' />
+          <Input id='name' {...register('name')} variant='secondary' label='ニックネーム' placeholder='たろう' maxCount={50} />
           {errors.name && <p className='text-sm text-red-700'>{errors.name.message}</p>}
         </div>
         <div>
-          <Label htmlFor='introduction'>ひとこと</Label>
-          <br />
           <Textarea id='introduction' {...register('introduction')} placeholder={`${user.introduction === '' && '入力してください'}`} />
           {errors.introduction && <p>{errors.introduction.message}</p>}
         </div>
         <div>
-          <Label htmlFor='x'>X(Twitter)のユーザー名</Label>
-          <Input id='x' {...register('x')} type='text' className='' placeholder='@は入力しないでください' />
+          <Input id='x' {...register('x')} variant='secondary' label='X' placeholder='@は入力しないでください' />
           {errors.x && <p className='text-sm text-red-700'>{errors.x.message}</p>}
         </div>
         <div>
-          <Label htmlFor='instagram'>Instagramのユーザー名</Label>
-          <Input id='instagram' {...register('instagram')} type='text' className='' placeholder='@は入力しないでください' />
+          <Input variant='secondary' id='instagram' {...register('instagram')} label='instagram' placeholder='@は入力しないでください' />
           {errors.instagram && <p className='text-sm text-red-700'>{errors.instagram.message}</p>}
         </div>
         <div>
@@ -62,10 +56,7 @@ export const Contents: React.FC<UserProps> = (userData) => {
           </ul>
           <div className='mt-3 flex items-center justify-center'>
             <p className='pr-2 text-xs text-[#727272]'>{lockWatched ? '鍵アカウント' : '公開アカウント'}</p>
-            <Label className='relative inline-block h-8 w-14'>
-              <Input {...register('lock')} type='checkbox' className='peer sr-only' />
-              <span className='block h-8 w-14 cursor-pointer rounded-full bg-gray-300 after:absolute after:left-1 after:top-1 after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-transform peer-checked:bg-blue-500 peer-checked:after:translate-x-6'></span>
-            </Label>
+            <ToggleSwitch {...register('lock')} />
           </div>
         </div>
         <div className='flex justify-around pt-7'>

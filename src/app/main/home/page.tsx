@@ -6,13 +6,10 @@ import { Posts } from '@/app/main/home/_components/posts/Posts';
 import { Header } from '@/app/main/_components/Header';
 
 export default function Page() {
-  // const response = await fetch(`${process.env.URL}/api/user`);
-  // if (!response.ok) throw new Error('データの取得に失敗しました。');
-  // const resultUser = await response.json();
-  // console.log('resultUser:', resultUser);
-
-  //サーバーコンポーネント
-  //ここでつぶやきをfetchしてPostsコンポーネントに渡す
+  /*
+  ここで自身のフォロー中イベントに関するつぶやきをfetchしてPostsコンポーネントに渡す
+  自分のフォローイベントフェッチ→それを元にfindManyでpostsをフェッチ
+  */
 
   return (
     <div>

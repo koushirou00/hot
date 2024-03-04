@@ -53,6 +53,7 @@ export const Cancel: Story = {
 export const Delete: Story = {
   args: {
     color: 'delete',
-    children: 'Delete Button'
+    children: 'Delete Button',
+    variant: 'outline'
   }
 };
