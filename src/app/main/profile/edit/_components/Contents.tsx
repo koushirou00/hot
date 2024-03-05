@@ -14,6 +14,9 @@ export const Contents: React.FC<UserProps> = (userData) => {
   const user = userData.user;
   const { register, watch, setValue, handleSubmit, errors, isSubmitting } = useEditForm(user);
   const router = useRouter();
+
+  const nameWatch = watch('name');
+  const introductionWatch = watch('introduction');
   const lockWatched = watch('lock', user?.lock); //チェックボックスの監視
 
   return (
@@ -29,19 +32,41 @@ export const Contents: React.FC<UserProps> = (userData) => {
       </div>
       <div className='px-6'>
         <div className='!-mt-3'>
-          <Input id='name' {...register('name')} variant='secondary' label='ニックネーム' placeholder='たろう' maxCount={50} />
+          <Input
+            id='name'
+            {...register('name')}
+            variant='secondary'
+            label='ニックネーム'
+            placeholder={user.name ? '' : 'たろう'}
+            watch={nameWatch}
+            maxLength={30}
+          />
           {errors.name && <p className='text-sm text-red-700'>{errors.name.message}</p>}
         </div>
         <div>
-          <Textarea id='introduction' {...register('introduction')} placeholder={`${user.introduction === '' && '入力してください'}`} />
+          <Textarea
+            rows={8}
+            maxLength={200}
+            variant='secondary'
+            id='introduction'
+            {...register('introduction')}
+            watch={introductionWatch}
+            placeholder={user.introduction ? '' : '入力してください'}
+          />
           {errors.introduction && <p>{errors.introduction.message}</p>}
         </div>
         <div>
-          <Input id='x' {...register('x')} variant='secondary' label='X' placeholder='@は入力しないでください' />
+          <Input id='x' {...register('x')} variant='secondary' label='X' placeholder={user.x ? '' : '@は入力しないでください'} />
           {errors.x && <p className='text-sm text-red-700'>{errors.x.message}</p>}
         </div>
         <div>
-          <Input variant='secondary' id='instagram' {...register('instagram')} label='instagram' placeholder='@は入力しないでください' />
+          <Input
+            variant='secondary'
+            id='instagram'
+            {...register('instagram')}
+            label='instagram'
+            placeholder={user.instagram ? '' : '@は入力しないでください'}
+          />
           {errors.instagram && <p className='text-sm text-red-700'>{errors.instagram.message}</p>}
         </div>
         <div>

@@ -2,7 +2,6 @@
 import React from 'react';
 import { cva } from 'class-variance-authority';
 import { ButtonProps } from '@/types/Button';
-import Link from 'next/link';
 
 // ベース設定
 const baseClassName = 'text-xs flex items-center justify-center transition-all ease-in-out duration-300';
@@ -75,9 +74,10 @@ export const Button: React.FC<ButtonProps> = ({ color, variant, size, rounder, c
   return (
     <>
       {href ? (
-        <Link className={combinedClassName} href={href} target={target}>
+        //キャッシュ対策でLinkタグ使用なし
+        <a className={combinedClassName} href={href} target={target}>
           {children}
-        </Link>
+        </a>
       ) : (
         <button className={combinedClassName} {...otherProps}>
           {children}

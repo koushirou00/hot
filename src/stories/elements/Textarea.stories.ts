@@ -1,22 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Input } from '@/components/elements/Input';
+import { Textarea } from '@/components/elements/Textarea';
 
-const meta: Meta<typeof Input> = {
-  title: 'Components/Input',
-  component: Input,
+const meta: Meta<typeof Textarea> = {
+  title: 'Components/Textarea',
+  component: Textarea,
   argTypes: {
     variant: {
       control: 'select',
       options: ['primary', 'secondary', 'search']
     },
-    labelSize: {
+    rows: {
       control: 'select',
-      options: ['md', 'xl']
-    },
-    focus: {
-      control: 'select',
-      options: ['none', 'blue']
+      options: ['sm', 'md', 'lg']
     },
     maxLength: {
       control: 'number'
@@ -40,11 +36,5 @@ export const Secondary: Story = {
   args: {
     variant: 'secondary',
     label: 'secondary label'
-  }
-};
-export const Search: Story = {
-  args: {
-    variant: 'search',
-    className: 'max-w-[318px]'
   }
 };

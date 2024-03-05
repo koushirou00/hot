@@ -10,8 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const schema = z.object({
-  name: z.string().min(1, 'お名前は必須です。').max(30, 'お名前は30文字以内で入力してください。'),
-  introduction: z.string().min(1, 'ひとことは必須です。').max(200, 'ひとことは200文字以内で入力してください。'),
+  name: z.string().min(1, 'お名前は必須です。'),
+  introduction: z.string().min(1, 'ひとことは必須です。'),
   lock: z.boolean(),
   instagram: z
     .string()
